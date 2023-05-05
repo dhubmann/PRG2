@@ -13,6 +13,7 @@ import javax.swing.JOptionPane;
 public class AddRoomController {
 
 	private AddRoomView addRoomView;
+	private ScheduleController scheduleController;
 	private Room room;
 
 	// Getters & Setters
@@ -24,6 +25,14 @@ public class AddRoomController {
 		this.addRoomView = addRoomView;
 	}
 
+	public ScheduleController getScheduleController() {
+		return scheduleController;
+	}
+
+	public void setScheduleController(ScheduleController scheduleController) {
+		this.scheduleController = scheduleController;
+	}
+
 	public Room getRoom() {
 		return room;
 	}
@@ -33,28 +42,25 @@ public class AddRoomController {
 	}
 
 	// Constructor
-	public AddRoomController(AddRoomView addRoomView) {
+	public AddRoomController(AddRoomView addRoomView, ScheduleController scheduleController) {
 		this.addRoomView = addRoomView;
+		this.scheduleController = scheduleController;
 
 		addRoomView.getBtnAdd().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				RoomNumber roomNumber = (RoomNumber) addRoomView.getCbRoomNumber().getSelectedItem();
 				Building building = (Building) addRoomView.getCbBuilding().getSelectedItem();
+				RoomNumber roomNumber = (RoomNumber) addRoomView.getCbRoomNumber().getSelectedItem();
 				RoomEquipment roomEq = (RoomEquipment) addRoomView.getCbRoomEquipment().getSelectedItem();
 
-				// TODO: input validation
-
-				room = new Room(roomNumber, building, roomEq);
-				
-
-				if (roomExists()) {
+				if (roomAlreadyExists(building, roomNumber)) {
 					roomAlreadyExistsWarning();
-					removeRoomData();
 					return;
 				}
+
+				room = new Room(building, roomNumber, roomEq);
 
 				Model.getRooms().add(room);
 				addRoomView.dispose();
@@ -64,9 +70,9 @@ public class AddRoomController {
 		});
 	}
 
-	public boolean roomExists() {
+	public boolean roomAlreadyExists(Building building, RoomNumber roomNumber) {
 		for (Room r : Model.getRooms()) {
-			if (r.getRoomID().equals(room.getRoomID())) {
+			if (r.getRoomID().equals(building + "-" + roomNumber)) {
 				return true;
 			}
 		}
@@ -75,11 +81,6 @@ public class AddRoomController {
 
 	public void roomAlreadyExistsWarning() {
 		JOptionPane.showMessageDialog(null, "We're sorry - the room you are trying to add already exists.");
-	}
-
-	private void removeRoomData() {
-		room = null;
-		Room.setNumRooms(Room.getNumRooms() - 1);
 	}
 
 }

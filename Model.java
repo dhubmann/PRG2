@@ -25,7 +25,7 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
 public class Model {
-	
+
 	LoginView loginView;
 	LoginController LoginController;
 	ScheduleView scheduleView;
@@ -55,18 +55,13 @@ public class Model {
 
 		assistent1.setPreferredRoomEquipment(RoomEquipment.COMPUTERS);
 
-		Room room1 = new Room(RoomNumber.R1, Building.A, RoomEquipment.STANDARD);
-		Room room2 = new Room(RoomNumber.R3, Building.C, RoomEquipment.COMPUTERS);
-		Room room3 = new Room(RoomNumber.R4, Building.B, RoomEquipment.SPACE);
+		Room room1 = new Room(Building.A, RoomNumber.R1, RoomEquipment.STANDARD);
+		Room room2 = new Room(Building.C, RoomNumber.R3, RoomEquipment.COMPUTERS);
+		Room room3 = new Room(Building.B, RoomNumber.R4, RoomEquipment.SPACE);
 
 		rooms.add(room1);
-		newRoomColumn(room1);
-
 		rooms.add(room2);
-		newRoomColumn(room2);
-
 		rooms.add(room3);
-		newRoomColumn(room3);
 
 		// MAT1 in A-R1 from 08:00 - 10:00 with emayer
 		Course course1 = new Course("MAT1", "A-R1", Model.getTimes()[0], Model.getTimes()[4],
@@ -84,10 +79,10 @@ public class Model {
 		Course course4 = new Course("Social Work Issues 2", "C-R3", Model.getTimes()[12], Model.getTimes()[16],
 				Model.getTeachingStaff().get(2).getUsername());
 
-		newCourseBlock(course1);
-		newCourseBlock(course2);
-		newCourseBlock(course3);
-		newCourseBlock(course4);
+		courses.add(course1);
+		courses.add(course2);
+		courses.add(course3);
+		courses.add(course4);
 
 	}
 
@@ -192,116 +187,6 @@ public class Model {
 			}
 		}
 		return 0;
-	}
-
-	// Creates a new room column
-	public static void newRoomColumn(Room room) {
-
-		JPanel panelRoomColumn = new JPanel();
-		panelRoomColumn.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panelRoomColumn.setBackground(new Color(255, 191, 191));
-		// TODO: implement compression when column in between gets removed
-		panelRoomColumn.setBounds((Model.getRooms().size() - 1) * 120, 0, 120, 702);
-		panelRoomColumn.setLayout(null);
-		panelRoomColumn.setVisible(true);
-
-		// delete button
-		JButton btnDelete = new JButton("X");
-		btnDelete.setLocation(100, 0);
-		btnDelete.setSize(20, 20);
-		btnDelete.setForeground(new Color(0, 0, 0));
-		btnDelete.setFont(new Font("SansSerif", Font.BOLD, 10));
-		btnDelete.setMargin(new Insets(0, 0, 0, 0));
-		btnDelete.setPreferredSize(new Dimension(10, 10));
-		panelRoomColumn.add(btnDelete);
-
-		// name of room
-		JLabel lblRoomID = new JLabel(room.getRoomID());
-		lblRoomID.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		lblRoomID.setHorizontalAlignment(SwingConstants.CENTER);
-		lblRoomID.setEnabled(false);
-		lblRoomID.setBounds(10, 11, 100, 24);
-		panelRoomColumn.add(lblRoomID);
-
-		// contains time slots for courses
-		JPanel panelCourseColumn = new JPanel();
-		panelCourseColumn.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
-		panelCourseColumn.setBackground(new Color(255, 191, 191));
-		panelCourseColumn.setBounds(10, 41, 100, 650);
-		panelRoomColumn.add(panelCourseColumn);
-
-		room.setPanelRoomColumn(panelRoomColumn);
-		room.setBtnDelete(btnDelete);
-		room.setPanelCoursColumn(panelCourseColumn);
-
-	}
-
-	// Creates new course block
-	public static void newCourseBlock(Course course) {
-
-		JLabel lblCourseBlock = new JLabel();
-		lblCourseBlock
-				.setText("<html><div style='text-align: center;'>" + course.getCourseID() + " - " + course.getTitle()
-						+ "</div><div>" + course.getStartTime() + " - " + course.getEndTime() + "</div></html>");
-		lblCourseBlock.setBorder(new LineBorder(new Color(0, 0, 0)));
-		lblCourseBlock.setForeground(new Color(255, 255, 255));
-		lblCourseBlock.setFont(new Font("SansSerif", Font.BOLD, 12));
-		lblCourseBlock.setOpaque(true);
-		lblCourseBlock.setBackground(new Color(255, 128, 128));
-		lblCourseBlock.setHorizontalAlignment(SwingConstants.CENTER);
-		lblCourseBlock.setBounds(0, timeIndex(course.getStartTime()) * 25, 100,
-				(timeIndex(course.getEndTime()) - timeIndex(course.getStartTime())) * 25);
-		lblCourseBlock.setVisible(true);
-		course.setLblCourseBlock(lblCourseBlock);
-
-		for (Room r : Model.getRooms()) {
-			if (r.getRoomID().equals(course.getRoomID())) {
-				JPanel panelCourseColumn = r.getPanelCoursColumn();
-				panelCourseColumn.setLayout(null);
-				panelCourseColumn.add(lblCourseBlock);
-				panelCourseColumn.revalidate();
-				panelCourseColumn.repaint();
-			}
-		}
-
-		/*
-		 * Students click on course blocks to sign in for courses.
-		 */
-
-//		if (loginController.isStudent() && course.isAttendable()) {
-//
-//			lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-//			lblCourseBlock.addMouseListener(new MouseAdapter() {
-//				@Override
-//				public void mouseClicked(MouseEvent e) {
-//					int result = JOptionPane.showConfirmDialog(scheduleView.getPanelMain(),
-//							"Do you want to sign in for this course?\n" + "Title: " + course.getTitle() + "\n"
-//									+ "with: " + course.getInstructor(),
-//							"Course Sign In", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//
-//					if (result == JOptionPane.YES_OPTION) {
-//						// TODO: change "JA" and "NEIN" to "YES" and "NO"
-//						// TODO: add student to course participants
-//						// TODO: add course to courseList
-//						// course.getParticipants().add(null);
-//
-//						lblCourseBlock.setBackground(new Color(255, 0, 0));
-//
-//						for (Course c : Model.getCourses()) {
-//							if (course.getCourseID() != c.getCourseID() && course.overlap(c)) {
-//								// TODO: fix course not attendable
-//								// course still attendable
-//								c.setAttendable(false); // fix this
-//								c.getLblCourseBlock().setBackground(new Color(211, 211, 211));
-//							}
-//						}
-//					}
-//				}
-//			});
-//		}
-
-//		return lblCourseBlock;
-
 	}
 
 }

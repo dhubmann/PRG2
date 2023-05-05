@@ -12,7 +12,7 @@ import java.time.LocalTime;
 public class PreferencesController {
 
 	private PreferencesView preferencesView;
-	private User user;
+	private ScheduleController scheduleController;
 
 	// Getters & Setters
 	public PreferencesView getPreferencesView() {
@@ -23,24 +23,25 @@ public class PreferencesController {
 		this.preferencesView = preferencesView;
 	}
 
-	public User getUser() {
-		return user;
+	public ScheduleController getScheduleController() {
+		return scheduleController;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setScheduleController(ScheduleController scheduleController) {
+		this.scheduleController = scheduleController;
 	}
 
 	// Constructor
-	public PreferencesController(PreferencesView preferencesView, User user) {
+	public PreferencesController(PreferencesView preferencesView, ScheduleController scheduleController) {
 		this.preferencesView = preferencesView;
-		this.user = user;
+		this.scheduleController = scheduleController;
 
 		preferencesView.getBtnSetPreferences().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
+				User user = scheduleController.getLoginController().getUser();
 				LocalTime preferredStartTime = (LocalTime) preferencesView.getCbStartTime().getSelectedItem();
 				RoomEquipment preferredRoomEquipment = (RoomEquipment) preferencesView.getCbRoomEquipement()
 						.getSelectedItem();

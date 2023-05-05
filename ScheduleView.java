@@ -12,6 +12,10 @@ import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.LineBorder;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.WeekFields;
+import java.util.Locale;
 import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
 
@@ -72,11 +76,18 @@ public class ScheduleView extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 
+		// TODO: grey out btnPreviousDay & btnNextDay
+		// TODO: update date to current date
 		// components
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
-		JLabel lblDate = new JLabel("MO 24.04. (KW 23)"); // TODO: change to current date or sth
+		
+		LocalDate date = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd.MM. '(KW 'ww')'");
+		String formattedDate = date.format(formatter);
+		
+		JLabel lblDate = new JLabel(formattedDate); // TODO: change to current date or sth
 		lblDate.setBackground(new Color(255, 255, 255));
 		lblDate.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		lblDate.setHorizontalAlignment(SwingConstants.CENTER);
@@ -84,6 +95,9 @@ public class ScheduleView extends JFrame {
 		btnPreviousDay.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		btnNextDay = new JButton(">>");
 		btnNextDay.setFont(new Font("SansSerif", Font.PLAIN, 16));
+		
+		btnPreviousDay.setEnabled(false);
+		btnNextDay.setEnabled(false);
 
 		// Main Panel Component
 		panelMain = new JPanel();
@@ -115,17 +129,18 @@ public class ScheduleView extends JFrame {
 //		btnDelete.setMargin(new Insets(0, 0, 0, 0));
 //		btnDelete.setPreferredSize(new Dimension(10, 10));
 //		panelRoomColumn.add(btnDelete);
-
+//
 //		lblCourseBlock = new JLabel();
+//		lblCourseBlock.setEnabled(false);
 //		lblCourseBlock.setText("<html><div style='text-align: center;'>C1</div><div>08:00 - 10:30</div></html>");
 //		lblCourseBlock.setForeground(new Color(255, 255, 255));
 //		lblCourseBlock.setFont(new Font("Tahoma", Font.BOLD, 12));
 //		lblCourseBlock.setOpaque(true);
-//		lblCourseBlock.setBackground(new Color(255, 128, 128));
+//		lblCourseBlock.setBackground(new Color(223, 223, 223));
 //		lblCourseBlock.setHorizontalAlignment(SwingConstants.CENTER);
 //		lblCourseBlock.setBounds(0, 0, 100, 600);
 //		panelCourseColumn.add(lblCourseBlock);
-
+//
 //		// name of room
 //		JLabel lblRoomID = new JLabel("test");
 //		lblRoomID.setBounds(10, 11, 100, 24);

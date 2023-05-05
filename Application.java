@@ -19,6 +19,7 @@ public class Application {
 			public void run() {
 				try {
 					LoginView loginView = new LoginView();
+					LoginController loginController = new LoginController(loginView);
 					loginView.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

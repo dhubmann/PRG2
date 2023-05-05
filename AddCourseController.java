@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 public class AddCourseController {
 
 	private AddCourseView addCourseView;
+	private ScheduleController scheduleController;
 	private Course course;
 
 	// Getters & Setters
@@ -25,13 +26,22 @@ public class AddCourseController {
 		this.addCourseView = addCourseView;
 	}
 
+	public ScheduleController getScheduleController() {
+		return scheduleController;
+	}
+
+	public void setScheduleController(ScheduleController scheduleController) {
+		this.scheduleController = scheduleController;
+	}
+
 	public Course getCourse() {
 		return course;
 	}
 
 	// Constructor
-	public AddCourseController(AddCourseView addCourseView) {
-		this.setAddCourseView(addCourseView);
+	public AddCourseController(AddCourseView addCourseView, ScheduleController scheduleController) {
+		this.addCourseView = addCourseView;
+		this.scheduleController = scheduleController;
 
 		addCourseView.getBtnAdd().addActionListener(new ActionListener() {
 
@@ -69,6 +79,7 @@ public class AddCourseController {
 
 				// TODO: implement room equipement preferenc of instructor
 				if (preferredRoomEquipment(instructor, roomID)) {
+					// TODO: warning if room doesn't have equipment instructor prefers
 					System.out.println("PREF");
 				} else {
 					System.out.println("NOT PREF");

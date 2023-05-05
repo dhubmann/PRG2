@@ -138,8 +138,5 @@ public class LoginView extends JFrame {
 		layout.setAutoCreateGaps(true);
 		layout.setAutoCreateContainerGaps(true);
 
-		@SuppressWarnings("unused")
-		LoginController loginController = new LoginController(this);
-
 	}
 }

@@ -18,14 +18,10 @@ public class Room {
 
 	private UUID roomUUID;
 	private String roomID;
-	private int capacity;
-	private boolean isAvailable;
-	private Building building;
 	private RoomEquipment roomEquipment;
 	private JPanel panelRoomColumn;
 	private JPanel panelCoursColumn;
 	private JButton btnDelete;
-	private ArrayList<Course> courseList;
 	private static int numRooms;
 
 	// Getters & Setters
@@ -43,30 +39,6 @@ public class Room {
 
 	public void setRoomID(String roomID) {
 		this.roomID = roomID;
-	}
-
-	public int getCapacity() {
-		return capacity;
-	}
-
-	public void setCapacity(int capacity) {
-		this.capacity = capacity;
-	}
-
-	public boolean isAvailable() {
-		return isAvailable;
-	}
-
-	public void setAvailable(boolean isAvailable) {
-		this.isAvailable = isAvailable;
-	}
-
-	public Building getBuilding() {
-		return building;
-	}
-
-	public void setBuilding(Building building) {
-		this.building = building;
 	}
 
 	public RoomEquipment getRoomEquipment() {
@@ -101,14 +73,6 @@ public class Room {
 		this.btnDelete = btnDelete;
 	}
 
-	public ArrayList<Course> getCourseList() {
-		return courseList;
-	}
-
-	public void setCourseList(ArrayList<Course> courseList) {
-		this.courseList = courseList;
-	}
-
 	public static int getNumRooms() {
 		return numRooms;
 	}
@@ -118,24 +82,17 @@ public class Room {
 	}
 
 	// Constructors
-	public Room() {
-		numRooms++;
-		this.setRoomUUID(UUID.randomUUID());
-		this.roomID = "R" + numRooms; // "R1", "R2"...
-		this.capacity = 5;
-		this.isAvailable = true;
-		this.courseList = new ArrayList<Course>();
-	}
+//	public Room() {
+//		numRooms++;
+//		this.setRoomUUID(UUID.randomUUID());
+//		this.roomID = "R" + numRooms; // "R1", "R2"...
+//	}
 
-	public Room(RoomNumber roomNumber, Building building, RoomEquipment roomEq) {
+	public Room(Building building, RoomNumber roomNumber, RoomEquipment roomEq) {
 		numRooms++;
 		this.setRoomUUID(UUID.randomUUID());
 		this.roomID = building.name() + "-" + roomNumber.name();
-		this.building = building;
 		this.roomEquipment = roomEq;
-		this.capacity = 5;
-		this.isAvailable = true;
-		this.courseList = new ArrayList<Course>();
 	}
 
 	public void setupButton(ScheduleView scheduleView) {

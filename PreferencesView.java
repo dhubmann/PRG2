@@ -20,7 +20,7 @@ public class PreferencesView extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JComboBox<LocalTime> cbStartTime;
-	private JComboBox<RoomEquipment> cbRoomEquipement; // boolean? Room?
+	private JComboBox<RoomEquipment> cbRoomEquipement;
 	private JButton btnSetPreferences;
 
 	// Getters

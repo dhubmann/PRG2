@@ -20,7 +20,6 @@ public class Course {
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private String instructor;
-	private User assistent;
 	private boolean isAttendable = true; // bug: setting courses to not attendable
 //	private boolean isAvailable; // if capacity not reached
 	private JLabel lblCourseBlock;
@@ -82,14 +81,6 @@ public class Course {
 
 	public void setInstructor(String instructor) {
 		this.instructor = instructor;
-	}
-
-	public User getAssistent() {
-		return assistent;
-	}
-
-	public void setAssistent(User assistent) {
-		this.assistent = assistent;
 	}
 
 	public boolean isAttendable() {

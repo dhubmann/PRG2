@@ -57,21 +57,19 @@ public class ScheduleController {
 			scheduleView.getBtnPreferences().setVisible(false);
 		}
 
+		if (loginController.isAssistent()) {
+			scheduleView.getBtnAddRoom().setEnabled(false);
+			scheduleView.getBtnAddCourse().setEnabled(false);
+		}
+
+		// TODO
+		// if isAssistent --> set BtnAddRoom & BtnAddCourse to grey - how?
+
 		// ADD ROOM
 		scheduleView.getBtnAddRoom().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-
-				/*
-				 * If user is assistent, permission denied
-				 */
-
-				// TODO: grey out button
-				if (loginController.isAssistent()) {
-					permissionDeniedWarning();
-					return;
-				}
 
 				/*
 				 * If numRooms is less than 6, add a new Room object
@@ -81,29 +79,26 @@ public class ScheduleController {
 				if (Model.getRooms().size() < 6) {
 					try {
 						AddRoomView addRoomView = new AddRoomView();
-						AddRoomController addRoomController = new AddRoomController(addRoomView);
+						AddRoomController addRoomController = new AddRoomController(addRoomView,
+								ScheduleController.this);
 						addRoomView.setVisible(true);
 
 						addRoomView.addWindowListener(new WindowAdapter() {
 							@Override
 							public void windowClosed(WindowEvent e) {
-								// adds a new room panel to the schedule after closing addRoomView
-//								addRoomController.getRoom()
-//										.setPanelRoomColumn(newRoomColumn(addRoomController.getRoom()));
+								// adds a new room panel to the schedule
 								try {
-									newRoomColumn(addRoomController.getRoom());
+									newRoomColumn(addRoomController.getRoom(), Model.getRooms().size() - 1);
 								} catch (NullPointerException ex) {
+									System.out.println("NO ROOM CREATED");
 									return;
 								}
 							}
 						});
-
 					} catch (Exception ex) {
 						ex.printStackTrace();
 					}
-				}
-
-				else {
+				} else {
 					roomLimitWarning();
 					return;
 				}
@@ -118,12 +113,6 @@ public class ScheduleController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// TODO: grey out button
-				if (loginController.isAssistent()) {
-					permissionDeniedWarning();
-					return;
-				}
-
 				/*
 				 * Open Add Course View to create new course object
 				 */
@@ -133,23 +122,20 @@ public class ScheduleController {
 					return;
 				}
 
-				if (roomsUnavailable()) {
-					roomsUnavailableWarning();
-					return;
-				}
-
 				try {
 					AddCourseView addCourseView = new AddCourseView();
-					AddCourseController addCourseController = new AddCourseController(addCourseView);
+					AddCourseController addCourseController = new AddCourseController(addCourseView,
+							ScheduleController.this);
 					addCourseView.setVisible(true);
 
 					addCourseView.addWindowListener(new WindowAdapter() {
 						@Override
 						public void windowClosed(WindowEvent e) {
-							// adds new course to schedule and closes view
+							// adds new course to the room column accordingly
 							try {
 								newCourseBlock(addCourseController.getCourse());
 							} catch (NullPointerException ex) {
+								System.out.println("NO COURSE CREATED");
 								return;
 							}
 						}
@@ -177,8 +163,9 @@ public class ScheduleController {
 					// 2.5. 23:47
 					// TODO: finish implementation
 					PreferencesView preferencesView = new PreferencesView();
+					@SuppressWarnings("unused")
 					PreferencesController preferencesController = new PreferencesController(preferencesView,
-							loginController.getUser());
+							ScheduleController.this);
 					preferencesView.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -201,6 +188,8 @@ public class ScheduleController {
 				try {
 					scheduleView.dispose();
 					LoginView loginView = new LoginView();
+					@SuppressWarnings("unused")
+					LoginController loginController = new LoginController(loginView);
 					loginView.setVisible(true);
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -218,13 +207,13 @@ public class ScheduleController {
 	}
 
 	// Creates new room column
-	public void newRoomColumn(Room room) {
+	public void newRoomColumn(Room room, int index) {
 
 		JPanel panelRoomColumn = new JPanel();
 		panelRoomColumn.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelRoomColumn.setBackground(new Color(255, 191, 191));
-		// TODO: implement compression when column in between gets removed
-		panelRoomColumn.setBounds((Model.getRooms().size() - 1) * 120, 0, 120, 702);
+		// x coordinate determined by number of rooms
+		panelRoomColumn.setBounds((index * 120), 0, 120, 702); // keep an eye on this
 		panelRoomColumn.setLayout(null);
 		panelRoomColumn.setVisible(true);
 		scheduleView.getPanelMain().add(panelRoomColumn);
@@ -232,9 +221,7 @@ public class ScheduleController {
 		scheduleView.getPanelMain().repaint();
 
 		// delete button
-
 		if (loginController.isAdmin()) {
-
 			JButton btnDelete = new JButton("X");
 			btnDelete.setLocation(100, 0);
 			btnDelete.setSize(20, 20);
@@ -245,14 +232,10 @@ public class ScheduleController {
 			btnDelete.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 
-					// TODO:
-					// warning: Are you sure you want to remove this room?
-
-					// if yes, then remove room column and data
 					/*
-					 * TODO: make it possible that if a room between rooms gets deleted, the open
-					 * space is available for new room objects - OR: the rest of the rooms get
-					 * ordered together so that there are no white spaces between rooms
+					 * TODO: implement compression of room columns if a column gets deleted between
+					 * two columns or on the far left - so far, only deleting the furthest column to
+					 * the right works fine
 					 */
 
 					int result = JOptionPane.showConfirmDialog(scheduleView.getPanelMain(),
@@ -271,7 +254,6 @@ public class ScheduleController {
 				}
 			});
 			panelRoomColumn.add(btnDelete);
-
 		}
 
 		// name of room
@@ -282,16 +264,15 @@ public class ScheduleController {
 		lblRoomID.setBounds(10, 11, 100, 24);
 		panelRoomColumn.add(lblRoomID);
 
-		// contains time slots for courses
+		// contains course blocks from 08:00 to 21:00
 		JPanel panelCourseColumn = new JPanel();
 		panelCourseColumn.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelCourseColumn.setBackground(new Color(255, 191, 191));
 		panelCourseColumn.setBounds(10, 41, 100, 650);
 		panelRoomColumn.add(panelCourseColumn);
 
-		// CHANGED 3.5. 8:52
+		//
 		room.setPanelCoursColumn(panelCourseColumn);
-//		return panelCourseColumn;
 		room.setPanelRoomColumn(panelRoomColumn);
 	}
 
@@ -308,6 +289,10 @@ public class ScheduleController {
 		lblCourseBlock.setOpaque(true);
 		lblCourseBlock.setBackground(new Color(255, 128, 128));
 		lblCourseBlock.setHorizontalAlignment(SwingConstants.CENTER);
+		/*
+		 * positions course block accordingly to start and end time - height of one 30
+		 * minutes block equals 25px
+		 */
 		lblCourseBlock.setBounds(0, Model.timeIndex(course.getStartTime()) * 25, 100,
 				(Model.timeIndex(course.getEndTime()) - Model.timeIndex(course.getStartTime())) * 25);
 		lblCourseBlock.setVisible(true);
@@ -324,9 +309,15 @@ public class ScheduleController {
 		}
 
 		/*
+		 * Assistents only see course they are the instructor of
+		 */
+		if (loginController.isAssistent() && !courseInstructor(course, loginController.getUser())) {
+			lblCourseBlock.setVisible(false);
+		}
+
+		/*
 		 * Students click on course blocks to sign in for courses.
 		 */
-
 		if (loginController.isStudent() && course.isAttendable()) {
 
 			lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
@@ -341,17 +332,19 @@ public class ScheduleController {
 					if (result == JOptionPane.YES_OPTION) {
 						// TODO: change "JA" and "NEIN" to "YES" and "NO"
 						// TODO: add student to course participants
-						// TODO: add course to courseList
+						// TODO: add course to the student's courseList
 						// course.getParticipants().add(null);
 
+						// student signs in --> turns label bright red
 						lblCourseBlock.setBackground(new Color(255, 0, 0));
 
 						for (Course c : Model.getCourses()) {
 							if (course.getCourseID() != c.getCourseID() && course.overlap(c)) {
-								// TODO: fix course not attendable
-								// course still attendable
-								c.setAttendable(false); // fix this
-								c.getLblCourseBlock().setBackground(new Color(211, 211, 211));
+								c.setAttendable(false);
+								c.getLblCourseBlock().setEnabled(false);
+
+								// TODO: maybe change font & background color
+								c.getLblCourseBlock().setBackground(new Color(250, 250, 250));
 							}
 						}
 					}
@@ -363,28 +356,17 @@ public class ScheduleController {
 
 	}
 
-	public void permissionDeniedWarning() {
-		JOptionPane.showMessageDialog(null,
-				"We are sorry but you don't have permission to change the room plan.\nPlease contact the office of the University Dean for more information.");
+	// Checks if the user is the course's instructor
+	public boolean courseInstructor(Course course, User user) {
+			if (course.getInstructor().equals(user.getUsername())) {
+				return true;
+			}
+		return false;
 	}
 
 	public void roomLimitWarning() {
 		JOptionPane.showMessageDialog(null,
 				"We are sorry - the room limit has exceeded!\nPlease contact the office of the University Dean if you need more rooms.");
-	}
-
-	public boolean roomsUnavailable() {
-		for (Room r : Model.getRooms()) {
-			if (r.isAvailable() == true) {
-				return false;
-			}
-		}
-		return true;
-	}
-
-	public void roomsUnavailableWarning() {
-		JOptionPane.showMessageDialog(null,
-				"We are sorry - it seems that all rooms are fully occupied.\nPlease contact the office of the University Dean for more information.");
 	}
 
 	public void noRoomCreatedWarning() {

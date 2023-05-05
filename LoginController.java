@@ -69,9 +69,6 @@ public class LoginController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				// TODO: create test data in model class?!
-//				TestModel.loadTestUsers();
-
 				String username = loginView.getTfUsername().getText();
 				String password = new String(loginView.getTfPassword().getPassword());
 				isAdmin = loginView.getChckbxAdmin().isSelected();
@@ -94,15 +91,17 @@ public class LoginController {
 				}
 
 				/*
-				 * if input is valid, login and create new ScheduleView();
+				 * if input is valid, login user and create new ScheduleView();
 				 */
 
-				// TODO: check if user is in userList
-				if (!isUser(username, password, isAdmin, isAssistent)) {
+				if (getUser(username, password, isAdmin, isAssistent).equals(null)) {
 					createAccountWarning();
 					return;
+				} else {
+					user = getUser(username, password, isAdmin, isAssistent);
 				}
 
+				// TODO: implement Privilegies Class
 				if (isAdmin == false && isAssistent == false) {
 					isStudent = true; // show student schedule view
 				}
@@ -115,22 +114,18 @@ public class LoginController {
 					isAssistent = true; // show assistent schedule view
 				}
 
-				// 2.5. 23:48
-				// TODO: assign User object to user to pass to Preferences
-
 				try {
 					ScheduleView scheduleView = new ScheduleView();
 					ScheduleController scheduleController = new ScheduleController(scheduleView, LoginController.this);
 
-					// set room columns of test data rooms
+					// adds test rooms to scheduleview
 					for (int i = 0; i < Model.getRooms().size(); i++) {
-						scheduleView.getPanelMain().add(Model.getRooms().get(i).getPanelRoomColumn());
-						scheduleController.updateView();
+						scheduleController.newRoomColumn(Model.getRooms().get(i), i); // keep an eye on this
+					}
 
-						// delete button functionality
-						Model.getRooms().get(i).setupButton(scheduleView);
-						
-						// TODO: fix this, buggy behaviour
+					// add test courses to rooms
+					for (int i = 0; i < Model.getCourses().size(); i++) {
+						scheduleController.newCourseBlock(Model.getCourses().get(i));
 					}
 
 					loginView.dispose();
@@ -179,25 +174,25 @@ public class LoginController {
 
 	}
 
-	public boolean isUser(String username, String password, boolean isAdmin, boolean isAssistent) {
+	public User getUser(String username, String password, boolean isAdmin, boolean isAssistent) {
 		for (User u : Model.getTeachingStaff()) {
 			if (u.getUsername().equals(username) && u.getPassword().equals(password) && u.isAdmin() == isAdmin
 					&& u.isAssistent() == isAssistent) {
-				return true;
+				return u;
 			}
 		}
 		for (User u : Model.getStudents()) {
 			if (u.getUsername().equals(username) && u.getPassword().equals(password) && u.isAdmin() == isAdmin
 					&& u.isAssistent() == isAssistent) {
-				return true;
+				return u;
 			}
 		}
-		return false;
+		return null;
 	}
 
 	public void createAccountWarning() {
 		JOptionPane.showMessageDialog(null,
-				"We are sorry - it seems that you don't have an account with us yet.\nPlease click on 'Create Account' to create an account. Thank you!");
+				"We're sorry - it seems that you don't have an account with us yet.\nPlease click on 'Create Account' to create an account. Thank you!");
 	}
 
 }

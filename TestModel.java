@@ -41,11 +41,11 @@ public class TestModel {
 	public static void loadTestRooms(ScheduleView scheduleView, ScheduleController scheduleController) {
 
 		// Rooms
-		Room room1 = new Room();
+//		Room room1 = new Room();
 //		room1.setPanelRoomColumn(scheduleController.newRoomColumn(room1));
-		Room room2 = new Room();
+//		Room room2 = new Room();
 //		room2.setPanelRoomColumn(scheduleController.newRoomColumn(room2));
-		Room room3 = new Room();
+//		Room room3 = new Room();
 //		room3.setPanelRoomColumn(scheduleController.newRoomColumn(room3));
 
 	}
