@@ -7,11 +7,8 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.time.Duration;
 import java.time.LocalTime;
-
 import javax.swing.JOptionPane;
 
 public class AddCourseController {
@@ -80,13 +77,13 @@ public class AddCourseController {
 				course = new Course(courseTitle, roomID, startTime, endTime, instructor);
 
 				// TODO: testing
-				if (courseOverlap(course)) {
+				if (courseOverlap()) {
 					roomNotAvailable();
 					removeCourseData();
 					return;
 				}
 
-				if (instructorOverlap(course)) {
+				if (instructorOverlap()) {
 					instructorNotAvailable();
 					removeCourseData();
 					return;
@@ -119,11 +116,10 @@ public class AddCourseController {
 	private void removeCourseData() {
 		course = null;
 		Course.setNumCourses(Course.getNumCourses() - 1);
-		Model.getCourses().remove(Model.getCourses().size() - 1);
 	}
 
 	// Checks if the room is available
-	private boolean courseOverlap(Course course) {
+	private boolean courseOverlap() {
 		for (Course c : Model.getCourses()) {
 			if (!course.getCourseID().equals(c.getCourseID()) && course.getRoomID().equals(c.getRoomID())
 					&& course.overlap(c)) {
@@ -139,7 +135,7 @@ public class AddCourseController {
 	}
 
 	// Checks if the instructor is available
-	public boolean instructorOverlap(Course course) {
+	public boolean instructorOverlap() {
 		for (Course c : Model.getCourses()) {
 			if (!course.getCourseID().equals(c.getCourseID()) && c.getInstructor().equals(course.getInstructor())
 					&& course.overlap(c)) {

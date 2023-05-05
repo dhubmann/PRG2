@@ -61,7 +61,7 @@ public class LoginController {
 
 	// Constructor
 	public LoginController(LoginView loginView) {
-		this.setLoginView(loginView);
+		this.loginView = loginView;
 
 		// LOGIN
 		loginView.getBtnLogin().addActionListener(new ActionListener() {
@@ -121,16 +121,18 @@ public class LoginController {
 				try {
 					ScheduleView scheduleView = new ScheduleView();
 					ScheduleController scheduleController = new ScheduleController(scheduleView, LoginController.this);
-//					TestModel.loadTestRooms(scheduleView, scheduleController);
-//					TestModel.loadTestCourses(scheduleController);
-					
-					// get all room columns
-					// TODO: set room columns of test data rooms
-					for(int i = 0; i < Model.getRooms().size(); i++) {
+
+					// set room columns of test data rooms
+					for (int i = 0; i < Model.getRooms().size(); i++) {
 						scheduleView.getPanelMain().add(Model.getRooms().get(i).getPanelRoomColumn());
 						scheduleController.updateView();
+
+						// delete button functionality
+						Model.getRooms().get(i).setupButton(scheduleView);
+						
+						// TODO: fix this, buggy behaviour
 					}
-					
+
 					loginView.dispose();
 					scheduleView.setVisible(true);
 				} catch (Exception ex) {

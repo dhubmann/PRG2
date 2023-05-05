@@ -16,13 +16,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.time.LocalTime;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
-import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
@@ -50,8 +48,8 @@ public class ScheduleController {
 
 	// Constructor
 	public ScheduleController(ScheduleView scheduleView, LoginController loginController) {
-		this.setScheduleView(scheduleView);
-		this.setLoginController(loginController);
+		this.scheduleView = scheduleView;
+		this.loginController = loginController;
 
 		if (loginController.isStudent()) {
 			scheduleView.getBtnAddRoom().setVisible(false);
@@ -86,15 +84,17 @@ public class ScheduleController {
 						AddRoomController addRoomController = new AddRoomController(addRoomView);
 						addRoomView.setVisible(true);
 
-						// Wait for the AddRoomView to be closed
 						addRoomView.addWindowListener(new WindowAdapter() {
 							@Override
 							public void windowClosed(WindowEvent e) {
 								// adds a new room panel to the schedule after closing addRoomView
 //								addRoomController.getRoom()
 //										.setPanelRoomColumn(newRoomColumn(addRoomController.getRoom()));
-
-								newRoomColumn(addRoomController.getRoom());
+								try {
+									newRoomColumn(addRoomController.getRoom());
+								} catch (NullPointerException ex) {
+									return;
+								}
 							}
 						});
 
@@ -143,14 +143,13 @@ public class ScheduleController {
 					AddCourseController addCourseController = new AddCourseController(addCourseView);
 					addCourseView.setVisible(true);
 
-					// Wait for the AddCourseView to be closed
 					addCourseView.addWindowListener(new WindowAdapter() {
 						@Override
 						public void windowClosed(WindowEvent e) {
 							// adds new course to schedule and closes view
 							try {
 								newCourseBlock(addCourseController.getCourse());
-							} catch(NullPointerException ex) {
+							} catch (NullPointerException ex) {
 								return;
 							}
 						}
@@ -201,7 +200,6 @@ public class ScheduleController {
 
 				try {
 					scheduleView.dispose();
-//					TestModel.clearTestModel(ScheduleController.this, scheduleView);
 					LoginView loginView = new LoginView();
 					loginView.setVisible(true);
 				} catch (Exception ex) {

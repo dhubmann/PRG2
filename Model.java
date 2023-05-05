@@ -25,6 +25,11 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 
 public class Model {
+	
+	LoginView loginView;
+	LoginController LoginController;
+	ScheduleView scheduleView;
+	ScheduleController scheduleController;
 
 	private static ArrayList<Room> rooms = new ArrayList<Room>();
 	private static ArrayList<JPanel> roomColumns = new ArrayList<JPanel>(); // lets try this
@@ -199,12 +204,8 @@ public class Model {
 		panelRoomColumn.setBounds((Model.getRooms().size() - 1) * 120, 0, 120, 702);
 		panelRoomColumn.setLayout(null);
 		panelRoomColumn.setVisible(true);
-//		scheduleView.getPanelMain().add(panelRoomColumn);
-//		scheduleView.getPanelMain().revalidate();
-//		scheduleView.getPanelMain().repaint();
 
 		// delete button
-
 		JButton btnDelete = new JButton("X");
 		btnDelete.setLocation(100, 0);
 		btnDelete.setSize(20, 20);
@@ -212,24 +213,6 @@ public class Model {
 		btnDelete.setFont(new Font("SansSerif", Font.BOLD, 10));
 		btnDelete.setMargin(new Insets(0, 0, 0, 0));
 		btnDelete.setPreferredSize(new Dimension(10, 10));
-//		btnDelete.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//
-//				int result = JOptionPane.showConfirmDialog(scheduleView.getPanelMain(),
-//						"WARNING: Are you sure you want to delete this room?\nAll course information will be lost.",
-//						"Delete room", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-//
-//				if (result == JOptionPane.YES_OPTION) {
-//					int roomIndex = Model.getRooms().indexOf(room);
-//					if (roomIndex != -1) {
-//						Model.getRooms().remove(roomIndex);
-//						scheduleView.getPanelMain().remove(panelRoomColumn);
-//						scheduleView.getPanelMain().revalidate();
-//						scheduleView.getPanelMain().repaint();
-//					}
-//				}
-//			}
-//		});
 		panelRoomColumn.add(btnDelete);
 
 		// name of room
@@ -247,8 +230,10 @@ public class Model {
 		panelCourseColumn.setBounds(10, 41, 100, 650);
 		panelRoomColumn.add(panelCourseColumn);
 
-		room.setPanelCoursColumn(panelCourseColumn);
 		room.setPanelRoomColumn(panelRoomColumn);
+		room.setBtnDelete(btnDelete);
+		room.setPanelCoursColumn(panelCourseColumn);
+
 	}
 
 	// Creates new course block

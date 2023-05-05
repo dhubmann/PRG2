@@ -8,6 +8,8 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 public class AddRoomController {
 
 	private AddRoomView addRoomView;
@@ -46,8 +48,13 @@ public class AddRoomController {
 				// TODO: input validation
 
 				room = new Room(roomNumber, building, roomEq);
+				
 
-				// TODO: check if room already exists in schedule
+				if (roomExists()) {
+					roomAlreadyExistsWarning();
+					removeRoomData();
+					return;
+				}
 
 				Model.getRooms().add(room);
 				addRoomView.dispose();
@@ -55,6 +62,24 @@ public class AddRoomController {
 			}
 
 		});
+	}
+
+	public boolean roomExists() {
+		for (Room r : Model.getRooms()) {
+			if (r.getRoomID().equals(room.getRoomID())) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void roomAlreadyExistsWarning() {
+		JOptionPane.showMessageDialog(null, "We're sorry - the room you are trying to add already exists.");
+	}
+
+	private void removeRoomData() {
+		room = null;
+		Room.setNumRooms(Room.getNumRooms() - 1);
 	}
 
 }
