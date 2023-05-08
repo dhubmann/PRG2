@@ -1,13 +1,13 @@
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.time.LocalTime;
-
 /*
  * PreferencesController
  * Represents preference logic
  * Author: Daniel Hubmann
  * Last Change: 29.04.2023
  */
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalTime;
 
 public class PreferencesController {
 

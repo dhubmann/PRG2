@@ -2,27 +2,12 @@
  * Model
  * Represents application data
  * Author: Daniel Hubmann
- * Last Change: 03.05.2023
+ * Last Change: 08.05.2023
  */
 
-import java.awt.Color;
-import java.awt.Cursor;
-import java.awt.Dimension;
-import java.awt.Font;
-import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
 
 public class Model {
 
@@ -44,11 +29,11 @@ public class Model {
 	private static final RoomEquipment[] ROOM_EQUIPMENT = RoomEquipment.values();
 
 	static {
-		Administrator admin1 = new Administrator("emayer", "1234", true, false);
-		Assistent assistent1 = new Assistent("slubos", "1234", false, true);
-		Assistent assistent2 = new Assistent("mgukesh", "1234", false, true);
-		Student student1 = new Student("dhubmann", "1234", false, false);
-		Student student2 = new Student("rhofer", "1234", false, false);
+		Administrator admin1 = new Administrator("emayer", "1234", "emayer@mail.com", true, false);
+		Assistent assistent1 = new Assistent("slubos", "1234", "slubos@mail.com", false, true);
+		Assistent assistent2 = new Assistent("mgukesh", "1234", "mgukesh@mail.com", false, true);
+		Student student1 = new Student("dhubmann", "1234", "dhubmann@mail.com", false, false);
+		Student student2 = new Student("rhofer", "1234", "rhofer@mail.com", false, false);
 
 //		admin1.setPreferredStartTime(Model.getTimes()[0]); // emayer: 08:00
 //		assistent1.setPreferredStartTime(Model.getTimes()[8]); // slubos: 12:00
@@ -67,8 +52,8 @@ public class Model {
 		Course course1 = new Course("MAT1", "A-R1", Model.getTimes()[0], Model.getTimes()[4],
 				Model.getTeachingStaff().get(0).getUsername());
 
-		// Programming 2 in A-R1 from 10:00 - 13:30 with slubos
-		Course course2 = new Course("Programming 2", "A-R1", Model.getTimes()[4], Model.getTimes()[11],
+		// Webtechnology in A-R1 from 10:00 - 13:30 with slubos
+		Course course2 = new Course("Webtechnology", "A-R1", Model.getTimes()[4], Model.getTimes()[11],
 				Model.getTeachingStaff().get(1).getUsername());
 
 		// Social Work in C-R3 from 09:00 - 13:30 with mgukesh

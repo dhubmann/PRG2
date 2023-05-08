@@ -74,15 +74,13 @@ public class AddCourseController {
 				}
 
 				if (!preferredTime(startTime, instructor)) {
-					notPreferredTime();
+					notPreferredTime(instructor);
 				}
 
 				// TODO: implement room equipement preferenc of instructor
-				if (preferredRoomEquipment(instructor, roomID)) {
+				if (!preferredRoomEquipment(instructor, roomID)) {
 					// TODO: warning if room doesn't have equipment instructor prefers
-					System.out.println("PREF");
-				} else {
-					System.out.println("NOT PREF");
+					notPreferredRoomEquipment(instructor);
 				}
 
 				course = new Course(courseTitle, roomID, startTime, endTime, instructor);
@@ -185,9 +183,9 @@ public class AddCourseController {
 		return true;
 	}
 
-	public void notPreferredTime() {
-		JOptionPane.showMessageDialog(null,
-				"The course start time is off by at least 2 hours compared to the instructor's preference.\nPlease inform the instructor. Thank you!");
+	public void notPreferredTime(String instructor) {
+		JOptionPane.showMessageDialog(null, "The course start time is off by at least 2 hours compared to " + instructor
+				+ "'s preference.\nPlease inform " + instructor + ". Thank you!");
 	}
 
 	// Compares room equipment preference of instructor with room equipment
@@ -196,26 +194,27 @@ public class AddCourseController {
 		// TODO:
 		for (Room r : Model.getRooms()) {
 			if (r.getRoomID().equals(roomID)) {
-
 				for (User u : Model.getTeachingStaff()) {
 					if (u instanceof Administrator && u.getUsername().equals(instructor)) {
-
 						if (((Administrator) u).getPreferredRoomEquipment().equals(r.getRoomEquipment())) {
 							return true;
 						}
 					}
-
 					if (u instanceof Assistent && u.getUsername().equals(instructor)) {
-
 						if (((Assistent) u).getPreferredRoomEquipment().equals(r.getRoomEquipment())) {
 							return true;
 						}
 					}
-
 				}
-
 			}
 		}
 		return false;
 	}
+
+	private void notPreferredRoomEquipment(String instructor) {
+		JOptionPane.showMessageDialog(null, "The room equipment does not match " + instructor
+				+ "'s preference.\nPlease inform " + instructor + ". Thank you!");
+
+	}
+
 }

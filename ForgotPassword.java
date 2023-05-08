@@ -2,10 +2,9 @@
  * ForgotPassword
  * Represents ForgotPassword View and Logic
  * Author: Daniel Hubmann
- * Author: 1.5.2023
+ * Author: 08.05.2023
  */
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -57,7 +56,12 @@ public class ForgotPassword extends JFrame {
 		btnContinue.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		btnContinue.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// TODO: implement email check
+
+				if (!InputValidator.checkEmailAddress(tfEmailAddress.getText())) {
+					invalidEmailAddress();
+					return;
+				}
+
 				if (userEmail(tfEmailAddress.getText())) {
 					checkEmailInboxMessage();
 				} else {
@@ -85,9 +89,13 @@ public class ForgotPassword extends JFrame {
 		return false;
 	}
 
+	public void invalidEmailAddress() {
+		JOptionPane.showMessageDialog(null, "Please enter a valid e-mail address!\nFor example: username@mail.com");
+		return;
+	}
+
 	public void checkEmailInboxMessage() {
-		JOptionPane.showMessageDialog(null,
-				"Please check your email inbox for further instructions on how to reset your password.");
+		JOptionPane.showMessageDialog(null, "Please check your email inbox.");
 	}
 
 	public void createAccountMessage() {

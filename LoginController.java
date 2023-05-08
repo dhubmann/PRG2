@@ -2,7 +2,7 @@
  * LoginController
  * Represents Logic behind Login View
  * Author: Daniel Hubmann
- * Last Change: 01.05.2023
+ * Last Change: 08.05.2023
  */
 
 import java.awt.event.ActionEvent;
@@ -90,12 +90,10 @@ public class LoginController {
 					return;
 				}
 
-				/*
-				 * if input is valid, login user and create new ScheduleView();
-				 */
-
-				if (getUser(username, password, isAdmin, isAssistent).equals(null)) {
+				if (getUser(username, password, isAdmin, isAssistent) == null) {
 					createAccountWarning();
+					loginView.getTfUsername().setText("");
+					loginView.getTfPassword().setText("");
 					return;
 				} else {
 					user = getUser(username, password, isAdmin, isAssistent);

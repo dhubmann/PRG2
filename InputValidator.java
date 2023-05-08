@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
 public class InputValidator {
 
 	private static final String PASSWORD_PATTERN = "\\w{4,}";
-	private static final String EMAIL_PATTERN = "^[a-zA-Z0-9]+@[a-zA-Z]+\\\\.[a-zA-Z][a-zA-Z]+";
+	private static final String EMAIL_PATTERN = "^[a-zA-Z0-9]+@[a-zA-Z]+\\.[a-zA-Z]{2,}";
 
 	// Checks input for blankness
 	public static boolean checkBlankInput(String input) {

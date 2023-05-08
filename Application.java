@@ -6,8 +6,6 @@
  */
 
 import java.awt.EventQueue;
-import java.time.LocalTime;
-import java.util.ArrayList;
 
 public class Application {
 
@@ -19,6 +17,7 @@ public class Application {
 			public void run() {
 				try {
 					LoginView loginView = new LoginView();
+					@SuppressWarnings("unused")
 					LoginController loginController = new LoginController(loginView);
 					loginView.setVisible(true);
 				} catch (Exception e) {

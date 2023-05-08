@@ -4,7 +4,7 @@ import java.time.LocalTime;
  * Administrator
  * Represents Administrator object
  * Author: Daniel Hubmann
- * Last Change: 28.04.2023
+ * Last Change: 08.05.2023
  */
 
 public class Administrator extends User {
@@ -28,14 +28,23 @@ public class Administrator extends User {
 	public void setPreferredRoomEquipment(RoomEquipment preferredRoomEquipment) {
 		this.preferredRoomEquipment = preferredRoomEquipment;
 	}
-	
+
 	// Constructor
 	public Administrator() {
+		this.setPreferredStartTime(Model.getTimes()[0]);
+		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
 		Model.getTeachingStaff().add(this);
 	}
 
 	public Administrator(String username, String password, boolean isAdmin, boolean isAssistent) {
 		super(username, password, isAdmin, isAssistent);
+		this.setPreferredStartTime(Model.getTimes()[0]);
+		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
+		Model.getTeachingStaff().add(this);
+	}
+
+	public Administrator(String username, String password, String email, boolean isAdmin, boolean isAssistent) {
+		super(username, password, email, isAdmin, isAssistent);
 		this.setPreferredStartTime(Model.getTimes()[0]);
 		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
 		Model.getTeachingStaff().add(this);

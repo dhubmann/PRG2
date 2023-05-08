@@ -2,10 +2,9 @@
  * CreateAccount
  * Represents CreateAccount View and Logic
  * Author: Daniel Hubmann
- * Author: 1.5.2023
+ * Author: 08.05.2023
  */
 
-import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -115,7 +114,7 @@ public class CreateAccount extends JFrame {
 					InputValidator.blankUsername();
 					return;
 				}
-				
+
 				if (InputValidator.checkBlankInput(email)) {
 					InputValidator.blankEmail();
 					return;
@@ -136,27 +135,41 @@ public class CreateAccount extends JFrame {
 					return;
 				}
 
-				// TODO: check for duplicates
+				if (userDuplicate(username)) {
+					userDuplicateWarning();
+					return;
+				}
+
+				if (emailDuplicate(email)) {
+					emailDuplicateWarning();
+					return;
+				}
 
 				User user = null;
 
 				// Create new user
 				if (isAdmin) {
-					user = new Administrator(username, password, isAdmin, isAssistent);
+					user = new Administrator();
 				} else if (isAssistent) {
-					user = new Assistent(username, password, isAdmin, isAssistent);
+					user = new Assistent();
 				} else {
-					user = new Student(username, password, isAdmin, isAssistent);
+					user = new Student();
 				}
-
+				user.setUsername(username);
+				user.setPassword(password);
+				user.setAdmin(isAdmin);
+				user.setAssistent(isAssistent);
 				user.setEmail(email);
 
+				dispose();
+
 			}
+
 		});
 		btnCreateAccount.setFont(new Font("SansSerif", Font.PLAIN, 12));
 		btnCreateAccount.setBounds(10, 237, 314, 28);
 		contentPane.add(btnCreateAccount);
-		
+
 		lblTitleISchedule = new JLabel("ISchedule");
 		lblTitleISchedule.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitleISchedule.setFont(new Font("SansSerif", Font.BOLD, 18));
@@ -164,8 +177,44 @@ public class CreateAccount extends JFrame {
 		contentPane.add(lblTitleISchedule);
 	}
 
+	private boolean userDuplicate(String username) {
+		for (User u : Model.getTeachingStaff()) {
+			if (u.getUsername().equals(username)) {
+				return true;
+			}
+		}
+		for (User u : Model.getStudents()) {
+			if (u.getUsername().equals(username)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private boolean emailDuplicate(String email) {
+		for (User u : Model.getTeachingStaff()) {
+			if (u.getEmail().equals(email)) {
+				return true;
+			}
+		}
+		for (User u : Model.getStudents()) {
+			if (u.getEmail().equals(email)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	public void userDuplicateWarning() {
+		JOptionPane.showMessageDialog(null, "We are sorry - the username you entered already exists.");
+	}
+
+	public void emailDuplicateWarning() {
+		JOptionPane.showMessageDialog(null, "We are sorry - the email address you entered already exists.");
+	}
+
 	public void passwordsDontMatch() {
 		JOptionPane.showMessageDialog(null,
-				"We are sorry - it seem the passwords do not match.\nPlease enter the same password in both fields.");
+				"We are sorry - it seems the passwords do not match.\nPlease enter the same password in both fields.");
 	}
 }
