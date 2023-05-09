@@ -10,6 +10,7 @@ import java.time.LocalTime;
 public class Administrator extends User {
 
 	private LocalTime preferredStartTime;
+	private LocalTime preferredEndTime;
 	private RoomEquipment preferredRoomEquipment;
 
 	// Getters & Setters
@@ -19,6 +20,14 @@ public class Administrator extends User {
 
 	public void setPreferredStartTime(LocalTime preferredStartTime) {
 		this.preferredStartTime = preferredStartTime;
+	}
+
+	public LocalTime getPreferredEndTime() {
+		return preferredEndTime;
+	}
+
+	public void setPreferredEndTime(LocalTime preferredEndTime) {
+		this.preferredEndTime = preferredEndTime;
 	}
 
 	public RoomEquipment getPreferredRoomEquipment() {
@@ -32,6 +41,7 @@ public class Administrator extends User {
 	// Constructor
 	public Administrator() {
 		this.setPreferredStartTime(Model.getTimes()[0]);
+		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
 		Model.getTeachingStaff().add(this);
 	}
@@ -39,6 +49,7 @@ public class Administrator extends User {
 	public Administrator(String username, String password, boolean isAdmin, boolean isAssistent) {
 		super(username, password, isAdmin, isAssistent);
 		this.setPreferredStartTime(Model.getTimes()[0]);
+		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
 		Model.getTeachingStaff().add(this);
 	}
@@ -46,6 +57,7 @@ public class Administrator extends User {
 	public Administrator(String username, String password, String email, boolean isAdmin, boolean isAssistent) {
 		super(username, password, email, isAdmin, isAssistent);
 		this.setPreferredStartTime(Model.getTimes()[0]);
+		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
 		Model.getTeachingStaff().add(this);
 	}

@@ -7,7 +7,6 @@
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.Duration;
 import java.time.LocalTime;
 import javax.swing.JOptionPane;
 
@@ -73,13 +72,15 @@ public class AddCourseController {
 					return;
 				}
 
-				if (!preferredTime(startTime, instructor)) {
+				// TODO: implement new time preference settings
+				// if course.starttime is before instructor.starttime
+				// or if course.endttime is after instructor.endtime
+
+				if (!preferredTime(startTime, endTime, instructor)) {
 					notPreferredTime(instructor);
 				}
 
-				// TODO: implement room equipement preferenc of instructor
 				if (!preferredRoomEquipment(instructor, roomID)) {
-					// TODO: warning if room doesn't have equipment instructor prefers
 					notPreferredRoomEquipment(instructor);
 				}
 
@@ -159,23 +160,26 @@ public class AddCourseController {
 				"We're sorry - " + course.getInstructor() + " is not available at the times you entered.");
 	}
 
-	// Compares course start time with preferred start time of instructor
-	public boolean preferredTime(LocalTime startTime, String instructor) {
-		LocalTime preferredStartTime = null;
+	// Compares course times with instructor's preferred start and end
+	public boolean preferredTime(LocalTime startTime, LocalTime endTime, String instructor) {
+		LocalTime start = null;
+		LocalTime end = null;
 		for (User u : Model.getTeachingStaff()) {
 			if (u.getUsername().equals(instructor)) {
 
 				if (u instanceof Administrator) {
-					preferredStartTime = ((Administrator) u).getPreferredStartTime();
+					start = ((Administrator) u).getPreferredStartTime();
+					end = ((Administrator) u).getPreferredEndTime();
+
 				}
 
 				if (u instanceof Assistent) {
-					preferredStartTime = ((Assistent) u).getPreferredStartTime();
+					start = ((Assistent) u).getPreferredStartTime();
+					end = ((Assistent) u).getPreferredEndTime();
+
 				}
 
-				Duration d = Duration.between(preferredStartTime, startTime);
-				long difference = Math.abs(d.toHours());
-				if (difference >= 2) {
+				if (startTime.isBefore(start) || endTime.isAfter(end)) {
 					return false;
 				}
 			}
@@ -183,9 +187,29 @@ public class AddCourseController {
 		return true;
 	}
 
+	// Warning message
 	public void notPreferredTime(String instructor) {
-		JOptionPane.showMessageDialog(null, "The course start time is off by at least 2 hours compared to " + instructor
-				+ "'s preference.\nPlease inform " + instructor + ". Thank you!");
+		LocalTime start = null;
+		LocalTime end = null;
+		for (User u : Model.getTeachingStaff()) {
+			if (u.getUsername().equals(instructor)) {
+
+				if (u instanceof Administrator) {
+					start = ((Administrator) u).getPreferredStartTime();
+					end = ((Administrator) u).getPreferredEndTime();
+
+				}
+
+				if (u instanceof Assistent) {
+					start = ((Assistent) u).getPreferredStartTime();
+					end = ((Assistent) u).getPreferredEndTime();
+
+				}
+			}
+		}
+		JOptionPane.showMessageDialog(null,
+				"The course times do not match with " + instructor + "'s preferred course times " + "(" + start + " - "
+						+ end + ")" + ".\nPlease inform " + instructor + ". Thank you!");
 	}
 
 	// Compares room equipment preference of instructor with room equipment

@@ -9,7 +9,9 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.UUID;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Course {
 
@@ -22,7 +24,9 @@ public class Course {
 	private String instructor;
 	private boolean isAttendable = true; // bug: setting courses to not attendable
 //	private boolean isAvailable; // if capacity not reached
+	private JButton btnDeleteCourse;
 	private JLabel lblCourseBlock;
+	private JPanel panelCourseBlock;
 	private ArrayList<Student> participants;
 	private static int numCourses;
 
@@ -91,12 +95,28 @@ public class Course {
 		this.isAttendable = isAttendable;
 	}
 
+	public JButton getBtnDeleteCourse() {
+		return btnDeleteCourse;
+	}
+
+	public void setBtnDeleteCourse(JButton btnDeleteCourse) {
+		this.btnDeleteCourse = btnDeleteCourse;
+	}
+
 	public JLabel getLblCourseBlock() {
 		return lblCourseBlock;
 	}
 
 	public void setLblCourseBlock(JLabel lblCourseBlock) {
 		this.lblCourseBlock = lblCourseBlock;
+	}
+
+	public JPanel getPanelCourseBlock() {
+		return panelCourseBlock;
+	}
+
+	public void setPanelCourseBlock(JPanel panelCourseBlock) {
+		this.panelCourseBlock = panelCourseBlock;
 	}
 
 	public ArrayList<Student> getParticipants() {

@@ -62,20 +62,12 @@ public class ScheduleController {
 			scheduleView.getBtnAddCourse().setEnabled(false);
 		}
 
-		// TODO
-		// if isAssistent --> set BtnAddRoom & BtnAddCourse to grey - how?
-
 		// ADD ROOM
 		scheduleView.getBtnAddRoom().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 
-				/*
-				 * If numRooms is less than 6, add a new Room object
-				 */
-
-				// TODO: implement AddRoomView & AddRoomController
 				if (Model.getRooms().size() < 6) {
 					try {
 						AddRoomView addRoomView = new AddRoomView();
@@ -90,7 +82,6 @@ public class ScheduleController {
 								try {
 									newRoomColumn(addRoomController.getRoom(), Model.getRooms().size() - 1);
 								} catch (NullPointerException ex) {
-									System.out.println("NO ROOM CREATED");
 									return;
 								}
 							}
@@ -135,7 +126,6 @@ public class ScheduleController {
 							try {
 								newCourseBlock(addCourseController.getCourse());
 							} catch (NullPointerException ex) {
-								System.out.println("NO COURSE CREATED");
 								return;
 							}
 						}
@@ -160,8 +150,6 @@ public class ScheduleController {
 				 */
 
 				try {
-					// 2.5. 23:47
-					// TODO: finish implementation
 					PreferencesView preferencesView = new PreferencesView();
 					@SuppressWarnings("unused")
 					PreferencesController preferencesController = new PreferencesController(preferencesView,
@@ -244,12 +232,11 @@ public class ScheduleController {
 
 					if (result == JOptionPane.YES_OPTION) {
 						int roomIndex = Model.getRooms().indexOf(room);
-						if (roomIndex != -1) {
-							Model.getRooms().remove(roomIndex);
-							scheduleView.getPanelMain().remove(panelRoomColumn);
-							scheduleView.getPanelMain().revalidate();
-							scheduleView.getPanelMain().repaint();
-						}
+						Model.getRooms().remove(roomIndex);
+						scheduleView.getPanelMain().remove(panelRoomColumn);
+						scheduleView.getPanelMain().revalidate();
+						scheduleView.getPanelMain().repaint();
+
 					}
 				}
 			});
@@ -271,7 +258,6 @@ public class ScheduleController {
 		panelCourseColumn.setBounds(10, 41, 100, 650);
 		panelRoomColumn.add(panelCourseColumn);
 
-		//
 		room.setPanelCoursColumn(panelCourseColumn);
 		room.setPanelRoomColumn(panelRoomColumn);
 	}
@@ -279,6 +265,48 @@ public class ScheduleController {
 	// Creates new course block
 	public JLabel newCourseBlock(Course course) {
 
+		final int Y_COORD = Model.timeIndex(course.getStartTime()) * 25;
+		final int WIDTH = 100;
+		final int HEIGHT = (Model.timeIndex(course.getEndTime()) - Model.timeIndex(course.getStartTime())) * 25;
+
+		JPanel panelCourseBlock = new JPanel();
+		panelCourseBlock.setLayout(null);
+		panelCourseBlock.setBounds(0, Y_COORD, WIDTH, HEIGHT);
+
+		// Delete course button
+		JButton btnDeleteCourse = new JButton("X");
+		btnDeleteCourse.setFont(new Font("SansSerif", Font.BOLD, 9));
+		btnDeleteCourse.setBounds(88, 0, 12, 12);
+		btnDeleteCourse.setMargin(new Insets(0, 0, 0, 0));
+		btnDeleteCourse.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				int result = JOptionPane.showConfirmDialog(scheduleView.getPanelMain(),
+						"WARNING: Are you sure you want to delete this course?\nAll course information will be lost.",
+						"Delete course", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+				if (result == JOptionPane.YES_OPTION) {
+
+					for (Room r : Model.getRooms()) {
+						if (course.getRoomID().equals(r.getRoomID())) {
+							int courseIndex = Model.getCourses().indexOf(course);
+							Model.getCourses().remove(courseIndex);
+
+							r.getPanelCoursColumn().remove(panelCourseBlock);
+							r.getPanelCoursColumn().revalidate();
+							r.getPanelCoursColumn().repaint();
+
+						}
+					}
+				}
+			}
+
+		});
+
+		panelCourseBlock.add(btnDeleteCourse);
+
+		// Course label
 		JLabel lblCourseBlock = new JLabel();
 		lblCourseBlock
 				.setText("<html><div style='text-align: center;'>" + course.getCourseID() + " - " + course.getTitle()
@@ -290,26 +318,34 @@ public class ScheduleController {
 		lblCourseBlock.setBackground(new Color(255, 128, 128));
 		lblCourseBlock.setHorizontalAlignment(SwingConstants.CENTER);
 		/*
-		 * positions course block accordingly to start and end time - height of one 30
-		 * minutes block equals 25px
+		 * positions course block accordingly to start and end time - height of one
+		 * 30-minutes block equals 25px
 		 */
-		lblCourseBlock.setBounds(0, Model.timeIndex(course.getStartTime()) * 25, 100,
-				(Model.timeIndex(course.getEndTime()) - Model.timeIndex(course.getStartTime())) * 25);
-		lblCourseBlock.setVisible(true);
+		lblCourseBlock.setBounds(0, 0, WIDTH, HEIGHT);
+		panelCourseBlock.add(lblCourseBlock);
+
+		panelCourseBlock.setVisible(true);
+//		course.setBtnDeleteCourse(btnDeleteCourse);
 		course.setLblCourseBlock(lblCourseBlock);
+		course.setPanelCourseBlock(panelCourseBlock);
 
 		for (Room r : Model.getRooms()) {
 			if (r.getRoomID().equals(course.getRoomID())) {
 				JPanel panelCourseColumn = r.getPanelCoursColumn();
 				panelCourseColumn.setLayout(null);
-				panelCourseColumn.add(lblCourseBlock);
+				panelCourseColumn.add(panelCourseBlock);
 				panelCourseColumn.revalidate();
 				panelCourseColumn.repaint();
 			}
 		}
 
+		// TODO: implemente Priviligies Class
+		if (!loginController.isAdmin()) {
+			btnDeleteCourse.setVisible(false);
+		}
+
 		/*
-		 * Assistents only see course they are the instructor of
+		 * Assistents only see courses they are the instructor of
 		 */
 		if (loginController.isAssistent() && !courseInstructor(course, loginController.getUser())) {
 			lblCourseBlock.setVisible(false);
@@ -333,7 +369,6 @@ public class ScheduleController {
 						// TODO: change "JA" and "NEIN" to "YES" and "NO"
 						// TODO: add student to course participants
 						// TODO: add course to the student's courseList
-						// course.getParticipants().add(null);
 
 						// student signs in --> turns label bright red
 						lblCourseBlock.setBackground(new Color(255, 0, 0));
@@ -358,9 +393,9 @@ public class ScheduleController {
 
 	// Checks if the user is the course's instructor
 	public boolean courseInstructor(Course course, User user) {
-			if (course.getInstructor().equals(user.getUsername())) {
-				return true;
-			}
+		if (course.getInstructor().equals(user.getUsername())) {
+			return true;
+		}
 		return false;
 	}
 

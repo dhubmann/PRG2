@@ -43,17 +43,21 @@ public class PreferencesController {
 
 				User user = scheduleController.getLoginController().getUser();
 				LocalTime preferredStartTime = (LocalTime) preferencesView.getCbStartTime().getSelectedItem();
+				LocalTime preferredEndTime = (LocalTime) preferencesView.getCbEndTime().getSelectedItem();
+
 				RoomEquipment preferredRoomEquipment = (RoomEquipment) preferencesView.getCbRoomEquipement()
 						.getSelectedItem();
 
 				if (user instanceof Administrator) {
 					((Administrator) user).setPreferredRoomEquipment(preferredRoomEquipment);
 					((Administrator) user).setPreferredStartTime(preferredStartTime);
+					((Administrator) user).setPreferredEndTime(preferredEndTime);
 				}
 
 				if (user instanceof Assistent) {
 					((Assistent) user).setPreferredRoomEquipment(preferredRoomEquipment);
 					((Assistent) user).setPreferredStartTime(preferredStartTime);
+					((Assistent) user).setPreferredEndTime(preferredEndTime);
 				}
 
 				preferencesView.dispose();

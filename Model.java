@@ -35,11 +35,6 @@ public class Model {
 		Student student1 = new Student("dhubmann", "1234", "dhubmann@mail.com", false, false);
 		Student student2 = new Student("rhofer", "1234", "rhofer@mail.com", false, false);
 
-//		admin1.setPreferredStartTime(Model.getTimes()[0]); // emayer: 08:00
-//		assistent1.setPreferredStartTime(Model.getTimes()[8]); // slubos: 12:00
-
-		assistent1.setPreferredRoomEquipment(RoomEquipment.COMPUTERS);
-
 		Room room1 = new Room(Building.A, RoomNumber.R1, RoomEquipment.STANDARD);
 		Room room2 = new Room(Building.C, RoomNumber.R3, RoomEquipment.COMPUTERS);
 		Room room3 = new Room(Building.B, RoomNumber.R4, RoomEquipment.SPACE);
