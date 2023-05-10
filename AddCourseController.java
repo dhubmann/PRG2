@@ -116,7 +116,7 @@ public class AddCourseController {
 
 	public void courseTitleTooLong() {
 		JOptionPane.showMessageDialog(null,
-				"Course titles must not be longer than 20 characters.\nPlease use abbrevations if possible.");
+				"Course titles must not be longer than 20 characters.\nPlease use abbrevations alternatively.");
 	}
 
 	public void invalidTimes() {

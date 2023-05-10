@@ -25,6 +25,7 @@ public class ScheduleView extends JFrame {
 	private JPanel contentPane, panelMain, panelCourseColumn;
 	private JButton btnPreviousDay, btnNextDay, btnAddRoom, btnAddCourse, btnPreferences, btnDelete, btnLogout;
 	private JLabel lblCourseBlock;
+	private JLabel lblStudentInfo, lblLoggedInUser;
 
 	// Getters
 	public JPanel getContentPane() {
@@ -67,6 +68,14 @@ public class ScheduleView extends JFrame {
 		return btnLogout;
 	}
 
+	public JLabel getLblStudentInfo() {
+		return lblStudentInfo;
+	}
+
+	public JLabel getLblLoggedInUser() {
+		return lblLoggedInUser;
+	}
+
 	/**
 	 * Create the frame.
 	 */
@@ -76,9 +85,7 @@ public class ScheduleView extends JFrame {
 		setResizable(false);
 		setLocationRelativeTo(null);
 
-		// TODO: grey out btnPreviousDay & btnNextDay
-		// TODO: update date to current date
-		// components
+		// Components
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -184,16 +191,26 @@ public class ScheduleView extends JFrame {
 		btnPreferences.setBounds(10, 79, 134, 23);
 		panelSidebar.add(btnPreferences);
 
-		btnLogout = new JButton("Logout");
-		btnLogout.setBounds(10, 668, 134, 23);
+		// Info for Students without courses
+		lblStudentInfo = new JLabel(
+				"<html>INFO<br>You are <b>not</b> signed up for any courses yet.<br> Click on a course to sign up.</html>");
+		lblStudentInfo.setVerticalAlignment(SwingConstants.TOP);
+		lblStudentInfo.setFont(new Font("SansSerif", Font.PLAIN, 11));
+		lblStudentInfo.setHorizontalAlignment(SwingConstants.LEFT);
+		lblStudentInfo.setBounds(10, 11, 134, 95);
+		panelSidebar.add(lblStudentInfo);
+
+		btnLogout = new JButton("LOGOUT");
+		btnLogout.setFont(new Font("SansSerif", Font.PLAIN, 11));
+		btnLogout.setBounds(10, 661, 134, 30);
 		panelSidebar.add(btnLogout);
 
-		// Info for Students without courses
-//		JLabel lblNotSignedIn = new JLabel("<html>INFO<br>You are <b>not</b> signed up for any courses yet.<br> Click on a course to sign up.</html>");
-//		lblNotSignedIn.setVerticalAlignment(SwingConstants.TOP);
-//		lblNotSignedIn.setHorizontalAlignment(SwingConstants.LEFT);
-//		lblNotSignedIn.setBounds(10, 560, 134, 90);
-//		panelSidebar.add(lblNotSignedIn);
+		// TODO: necessary?
+//		lblLoggedInUser = new JLabel("You are logged in, ");
+//		lblLoggedInUser.setVerticalAlignment(SwingConstants.TOP);
+//		lblLoggedInUser.setFont(new Font("SansSerif", Font.PLAIN, 11));
+//		lblLoggedInUser.setBounds(10, 622, 134, 28);
+//		panelSidebar.add(lblLoggedInUser);
 
 		// set layout and add components to layout
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);

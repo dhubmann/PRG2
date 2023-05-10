@@ -2,14 +2,14 @@
  * Student
  * Represents Student object
  * Author: Daniel Hubmann
- * Last Change: 28.04.2023
+ * Last Change: 10.05.2023
  */
 
 import java.util.ArrayList;
 
 public class Student extends User {
 
-	private ArrayList<Course> courseList;
+	private ArrayList<Course> courseList = new ArrayList<Course>();
 
 	// Getters & Setters
 	public ArrayList<Course> getCourseList() {

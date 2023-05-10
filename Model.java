@@ -2,7 +2,7 @@
  * Model
  * Represents application data
  * Author: Daniel Hubmann
- * Last Change: 08.05.2023
+ * Last Change: 10.05.2023
  */
 
 import java.time.LocalTime;
@@ -29,15 +29,15 @@ public class Model {
 	private static final RoomEquipment[] ROOM_EQUIPMENT = RoomEquipment.values();
 
 	static {
-		Administrator admin1 = new Administrator("emayer", "1234", "emayer@mail.com", true, false);
-		Assistent assistent1 = new Assistent("slubos", "1234", "slubos@mail.com", false, true);
-		Assistent assistent2 = new Assistent("mgukesh", "1234", "mgukesh@mail.com", false, true);
-		Student student1 = new Student("dhubmann", "1234", "dhubmann@mail.com", false, false);
-		Student student2 = new Student("rhofer", "1234", "rhofer@mail.com", false, false);
+		new Administrator("emayer", "1234", "emayer@mail.com", true, false);
+		new Assistent("slubos", "1234", "slubos@mail.com", false, true);
+		new Assistent("mgukesh", "1234", "mgukesh@mail.com", false, true);
+		new Student("dhubmann", "1234", "dhubmann@mail.com", false, false);
+		new Student("rhofer", "1234", "rhofer@mail.com", false, false);
 
 		Room room1 = new Room(Building.A, RoomNumber.R1, RoomEquipment.STANDARD);
-		Room room2 = new Room(Building.C, RoomNumber.R3, RoomEquipment.COMPUTERS);
-		Room room3 = new Room(Building.B, RoomNumber.R4, RoomEquipment.SPACE);
+		Room room2 = new Room(Building.C, RoomNumber.R3, RoomEquipment.SPACE);
+		Room room3 = new Room(Building.B, RoomNumber.R4, RoomEquipment.COMPUTERS);
 
 		rooms.add(room1);
 		rooms.add(room2);
@@ -56,7 +56,7 @@ public class Model {
 				Model.getTeachingStaff().get(2).getUsername());
 
 		// Social Work in C-R3 from 14:30 - 16:00 with mgukesh
-		Course course4 = new Course("Social Work Issues 2", "C-R3", Model.getTimes()[12], Model.getTimes()[16],
+		Course course4 = new Course("Social Work", "C-R3", Model.getTimes()[12], Model.getTimes()[16],
 				Model.getTeachingStaff().get(2).getUsername());
 
 		courses.add(course1);

@@ -2,14 +2,12 @@
  * Room
  * Represents Room object
  * Author: Daniel Hubmann
- * Last Change: 2.5.2023
+ * Last Change: 10.05.2023
  */
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.UUID;
-
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;

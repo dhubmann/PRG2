@@ -308,9 +308,9 @@ public class ScheduleController {
 
 		// Course label
 		JLabel lblCourseBlock = new JLabel();
-		lblCourseBlock
-				.setText("<html><div style='text-align: center;'>" + course.getCourseID() + " - " + course.getTitle()
-						+ "</div><div>" + course.getStartTime() + " - " + course.getEndTime() + "</div></html>");
+		lblCourseBlock.setText("<html><div style='text-align: center;'>" + course.getTitle()
+				+ "</div><div style='text-align: center;'>" + course.getStartTime() + " - " + course.getEndTime()
+				+ "</div></html>");
 		lblCourseBlock.setBorder(new LineBorder(new Color(0, 0, 0)));
 		lblCourseBlock.setForeground(new Color(255, 255, 255));
 		lblCourseBlock.setFont(new Font("SansSerif", Font.BOLD, 12));
@@ -325,7 +325,6 @@ public class ScheduleController {
 		panelCourseBlock.add(lblCourseBlock);
 
 		panelCourseBlock.setVisible(true);
-//		course.setBtnDeleteCourse(btnDeleteCourse);
 		course.setLblCourseBlock(lblCourseBlock);
 		course.setPanelCourseBlock(panelCourseBlock);
 
@@ -348,7 +347,7 @@ public class ScheduleController {
 		 * Assistents only see courses they are the instructor of
 		 */
 		if (loginController.isAssistent() && !courseInstructor(course, loginController.getUser())) {
-			lblCourseBlock.setVisible(false);
+			panelCourseBlock.setVisible(false);
 		}
 
 		/*
@@ -368,7 +367,10 @@ public class ScheduleController {
 					if (result == JOptionPane.YES_OPTION) {
 						// TODO: change "JA" and "NEIN" to "YES" and "NO"
 						// TODO: add student to course participants
+
 						// TODO: add course to the student's courseList
+						((Student) loginController.getUser()).getCourseList().add(course);
+						scheduleView.getLblStudentInfo().setVisible(false);
 
 						// student signs in --> turns label bright red
 						lblCourseBlock.setBackground(new Color(255, 0, 0));
@@ -387,6 +389,7 @@ public class ScheduleController {
 			});
 		}
 
+		// TODO: check if necessary?
 		return lblCourseBlock;
 
 	}
