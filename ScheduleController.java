@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JButton;
@@ -55,6 +56,9 @@ public class ScheduleController {
 			scheduleView.getBtnAddRoom().setVisible(false);
 			scheduleView.getBtnAddCourse().setVisible(false);
 			scheduleView.getBtnPreferences().setVisible(false);
+			if (((Student) loginController.getUser()).getCourseList().isEmpty()) {
+				scheduleView.getLblStudentInfo().setVisible(true);
+			}
 		}
 
 		if (loginController.isAssistent()) {
@@ -201,7 +205,7 @@ public class ScheduleController {
 		panelRoomColumn.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
 		panelRoomColumn.setBackground(new Color(255, 191, 191));
 		// x coordinate determined by number of rooms
-		panelRoomColumn.setBounds((index * 120), 0, 120, 702); // keep an eye on this
+		panelRoomColumn.setBounds((index * 120), 0, 120, 702);
 		panelRoomColumn.setLayout(null);
 		panelRoomColumn.setVisible(true);
 		scheduleView.getPanelMain().add(panelRoomColumn);
@@ -263,11 +267,13 @@ public class ScheduleController {
 	}
 
 	// Creates new course block
-	public JLabel newCourseBlock(Course course) {
+	public void newCourseBlock(Course course) {
 
-		final int Y_COORD = Model.timeIndex(course.getStartTime()) * 25;
+		final int BLOCK_HEIGHT = 25;
+		final int Y_COORD = Model.timeIndex(course.getStartTime()) * BLOCK_HEIGHT;
 		final int WIDTH = 100;
-		final int HEIGHT = (Model.timeIndex(course.getEndTime()) - Model.timeIndex(course.getStartTime())) * 25;
+		final int HEIGHT = (Model.timeIndex(course.getEndTime()) - Model.timeIndex(course.getStartTime()))
+				* BLOCK_HEIGHT;
 
 		JPanel panelCourseBlock = new JPanel();
 		panelCourseBlock.setLayout(null);
@@ -317,28 +323,48 @@ public class ScheduleController {
 		lblCourseBlock.setOpaque(true);
 		lblCourseBlock.setBackground(new Color(255, 128, 128));
 		lblCourseBlock.setHorizontalAlignment(SwingConstants.CENTER);
-		/*
-		 * positions course block accordingly to start and end time - height of one
-		 * 30-minutes block equals 25px
-		 */
 		lblCourseBlock.setBounds(0, 0, WIDTH, HEIGHT);
-		panelCourseBlock.add(lblCourseBlock);
 
+		panelCourseBlock.add(lblCourseBlock);
 		panelCourseBlock.setVisible(true);
 		course.setLblCourseBlock(lblCourseBlock);
 		course.setPanelCourseBlock(panelCourseBlock);
 
-		for (Room r : Model.getRooms()) {
-			if (r.getRoomID().equals(course.getRoomID())) {
-				JPanel panelCourseColumn = r.getPanelCoursColumn();
-				panelCourseColumn.setLayout(null);
-				panelCourseColumn.add(panelCourseBlock);
-				panelCourseColumn.revalidate();
-				panelCourseColumn.repaint();
-			}
-		}
+		// MouseListener
+		lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		MouseListener ml = new MouseAdapter() {
 
-		// TODO: implemente Priviligies Class
+			/*
+			 * Students click on course blocks to sign up for courses.
+			 */
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				int result = JOptionPane.showConfirmDialog(scheduleView.getPanelMain(),
+						"Do you want to sign in for this course?\n" + "Title: " + course.getTitle() + "\n" + "with: "
+								+ course.getInstructor(),
+						"Course Sign In", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+				if (result == JOptionPane.YES_OPTION) {
+					((Student) loginController.getUser()).getCourseList().add(course);
+					course.getParticipants().add((Student) loginController.getUser());
+					scheduleView.getLblStudentInfo().setVisible(false);
+
+					lblCourseBlock.setBackground(new Color(255, 0, 0));
+					lblCourseBlock.setEnabled(false);
+					lblCourseBlock.removeMouseListener(course.getMouseListener());
+
+					setCoursesToUnclickable(course);
+
+					scheduleView.getPanelMain().revalidate();
+					scheduleView.getPanelMain().repaint();
+
+				}
+			}
+
+		};
+
+		// TODO: implement Priviligies Class
 		if (!loginController.isAdmin()) {
 			btnDeleteCourse.setVisible(false);
 		}
@@ -350,47 +376,31 @@ public class ScheduleController {
 			panelCourseBlock.setVisible(false);
 		}
 
-		/*
-		 * Students click on course blocks to sign in for courses.
-		 */
-		if (loginController.isStudent() && course.isAttendable()) {
+		// Setting signed in & overlapping course labels to not clickable
+		if (loginController.isStudent()) {
 
-			lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-			lblCourseBlock.addMouseListener(new MouseAdapter() {
-				@Override
-				public void mouseClicked(MouseEvent e) {
-					int result = JOptionPane.showConfirmDialog(scheduleView.getPanelMain(),
-							"Do you want to sign in for this course?\n" + "Title: " + course.getTitle() + "\n"
-									+ "with: " + course.getInstructor(),
-							"Course Sign In", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			course.getLblCourseBlock().addMouseListener(ml);
+			course.setMouseListener(ml);
 
-					if (result == JOptionPane.YES_OPTION) {
-						// TODO: change "JA" and "NEIN" to "YES" and "NO"
-						// TODO: add student to course participants
+			for (Course c : Model.getCourses()) {
+				if (((Student) loginController.getUser()).getCourseList().contains(c)
+						&& course.getCourseID() != c.getCourseID() && course.overlap(c)) {
+					course.getLblCourseBlock().setBackground(new Color(250, 250, 250));
+					course.getLblCourseBlock().setEnabled(false);
+					course.getLblCourseBlock().removeMouseListener(course.getMouseListener());
 
-						// TODO: add course to the student's courseList
-						((Student) loginController.getUser()).getCourseList().add(course);
-						scheduleView.getLblStudentInfo().setVisible(false);
-
-						// student signs in --> turns label bright red
-						lblCourseBlock.setBackground(new Color(255, 0, 0));
-
-						for (Course c : Model.getCourses()) {
-							if (course.getCourseID() != c.getCourseID() && course.overlap(c)) {
-								c.setAttendable(false);
-								c.getLblCourseBlock().setEnabled(false);
-
-								// TODO: maybe change font & background color
-								c.getLblCourseBlock().setBackground(new Color(250, 250, 250));
-							}
-						}
-					}
 				}
-			});
+			}
+
+			if (course.getParticipants().contains((Student) loginController.getUser())) {
+				lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.DEFAULT_CURSOR));
+				lblCourseBlock.setBackground(new Color(255, 0, 0));
+				lblCourseBlock.setEnabled(false);
+				lblCourseBlock.removeMouseListener(course.getMouseListener());
+			}
 		}
 
-		// TODO: check if necessary?
-		return lblCourseBlock;
+		addCourseToRoom(course);
 
 	}
 
@@ -400,6 +410,31 @@ public class ScheduleController {
 			return true;
 		}
 		return false;
+	}
+
+	public void setCoursesToUnclickable(Course course) {
+		for (Course c : Model.getCourses()) {
+			if (((Student) loginController.getUser()).getCourseList().contains(course)
+					&& course.getCourseID() != c.getCourseID() && course.overlap(c)) {
+				c.getLblCourseBlock().setBackground(new Color(250, 250, 250));
+				c.getLblCourseBlock().setEnabled(false);
+				c.getLblCourseBlock().removeMouseListener(c.getMouseListener());
+			}
+		}
+
+	}
+
+	// Adds courses to their according rooms in the schedule
+	private void addCourseToRoom(Course course) {
+		for (Room r : Model.getRooms()) {
+			if (r.getRoomID().equals(course.getRoomID())) {
+				JPanel panelCourseColumn = r.getPanelCoursColumn();
+				panelCourseColumn.setLayout(null);
+				panelCourseColumn.add(course.getPanelCourseBlock());
+				panelCourseColumn.revalidate();
+				panelCourseColumn.repaint();
+			}
+		}
 	}
 
 	public void roomLimitWarning() {

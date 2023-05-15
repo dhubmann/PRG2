@@ -5,6 +5,7 @@
  * Last Change: 29.04.2023
  */
 
+import java.awt.event.MouseListener;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -22,10 +23,11 @@ public class Course {
 	private LocalTime startTime;
 	private LocalTime endTime;
 	private String instructor;
-	private boolean isAttendable = true; // bug: setting courses to not attendable
+	private boolean isAttendable = true;
 //	private boolean isAvailable; // if capacity not reached
 	private JButton btnDeleteCourse;
 	private JLabel lblCourseBlock;
+	private MouseListener mouseListener;
 	private JPanel panelCourseBlock;
 	private ArrayList<Student> participants;
 	private static int numCourses;
@@ -111,6 +113,14 @@ public class Course {
 		this.lblCourseBlock = lblCourseBlock;
 	}
 
+	public MouseListener getMouseListener() {
+		return mouseListener;
+	}
+
+	public void setMouseListener(MouseListener mouseListener) {
+		this.mouseListener = mouseListener;
+	}
+
 	public JPanel getPanelCourseBlock() {
 		return panelCourseBlock;
 	}
@@ -139,6 +149,7 @@ public class Course {
 	public Course() {
 		numCourses++;
 		this.courseID = "C" + numCourses;
+		this.participants = new ArrayList<Student>();
 	}
 
 	public Course(String title, String roomID, LocalTime startTime, LocalTime endTime, String instructor) {
@@ -149,6 +160,7 @@ public class Course {
 		this.startTime = startTime;
 		this.endTime = endTime;
 		this.instructor = instructor;
+		this.participants = new ArrayList<Student>();
 	}
 
 	// Checks for overlapping times

@@ -118,10 +118,10 @@ public class LoginController {
 
 					// adds test rooms to scheduleview
 					for (int i = 0; i < Model.getRooms().size(); i++) {
-						scheduleController.newRoomColumn(Model.getRooms().get(i), i); // keep an eye on this
+						scheduleController.newRoomColumn(Model.getRooms().get(i), i);
 					}
 
-					// add test courses to rooms
+					// adds test courses to rooms
 					for (int i = 0; i < Model.getCourses().size(); i++) {
 						scheduleController.newCourseBlock(Model.getCourses().get(i));
 					}
