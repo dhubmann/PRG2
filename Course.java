@@ -2,21 +2,18 @@
  * Course
  * Represents Course object
  * Author: Daniel Hubmann
- * Last Change: 29.04.2023
+ * Last Change: 27.05.2023
  */
 
 import java.awt.event.MouseListener;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.UUID;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class Course {
 
-	private UUID courseUUID;
 	private String courseID;
 	private String title;
 	private String roomID;
@@ -24,7 +21,6 @@ public class Course {
 	private LocalTime endTime;
 	private String instructor;
 	private boolean isAttendable = true;
-//	private boolean isAvailable; // if capacity not reached
 	private JButton btnDeleteCourse;
 	private JLabel lblCourseBlock;
 	private MouseListener mouseListener;
@@ -33,14 +29,6 @@ public class Course {
 	private static int numCourses;
 
 	// Getters & Setters
-	public UUID getCourseUUID() {
-		return courseUUID;
-	}
-
-	public void setCourseUUID(UUID courseUUID) {
-		this.courseUUID = courseUUID;
-	}
-
 	public String getCourseID() {
 		return courseID;
 	}
@@ -175,7 +163,5 @@ public class Course {
 
 		return true;
 	}
-
-	// printCourseInfo()?
 
 }

@@ -2,7 +2,7 @@
  * LoginController
  * Represents Logic behind Login View
  * Author: Daniel Hubmann
- * Last Change: 08.05.2023
+ * Last Change: 27.05.2023
  */
 
 import java.awt.event.ActionEvent;
@@ -15,7 +15,7 @@ public class LoginController {
 	private LoginView loginView;
 	private boolean isStudent;
 	private boolean isAdmin;
-	private boolean isAssistent;
+	private boolean isAssistant;
 	private User user;
 
 	// Getters & Setters
@@ -43,12 +43,12 @@ public class LoginController {
 		this.isAdmin = isAdmin;
 	}
 
-	public boolean isAssistent() {
-		return isAssistent;
+	public boolean isAssistant() {
+		return isAssistant;
 	}
 
-	public void setAssistent(boolean isAssistent) {
-		this.isAssistent = isAssistent;
+	public void setAssistant(boolean isAssistant) {
+		this.isAssistant = isAssistant;
 	}
 
 	public User getUser() {
@@ -72,7 +72,7 @@ public class LoginController {
 				String username = loginView.getTfUsername().getText();
 				String password = new String(loginView.getTfPassword().getPassword());
 				isAdmin = loginView.getChckbxAdmin().isSelected();
-				isAssistent = loginView.getChckbxAssistent().isSelected();
+				isAssistant = loginView.getChckbxAssistant().isSelected();
 
 				// Input Validation
 				if (InputValidator.checkBlankInput(username)) {
@@ -85,31 +85,29 @@ public class LoginController {
 					return;
 				}
 
-				if (InputValidator.isAdminAndAssistent(isAdmin, isAssistent)) {
-					InputValidator.isAdminAndAssistent();
+				if (InputValidator.isAdminAndAssistant(isAdmin, isAssistant)) {
+					InputValidator.isAdminAndAssistant();
 					return;
 				}
 
-				if (getUser(username, password, isAdmin, isAssistent) == null) {
+				if (getUser(username, password, isAdmin, isAssistant) == null) {
 					createAccountWarning();
-					loginView.getTfUsername().setText("");
-					loginView.getTfPassword().setText("");
 					return;
 				} else {
-					user = getUser(username, password, isAdmin, isAssistent);
+					user = getUser(username, password, isAdmin, isAssistant);
 				}
 
 				// TODO: implement Privilegies Class
-				if (isAdmin == false && isAssistent == false) {
+				if (isAdmin == false && isAssistant == false) {
 					isStudent = true; // show student schedule view
 				}
 
-				if (isAdmin == true && isAssistent == false) {
+				if (isAdmin == true && isAssistant == false) {
 					isAdmin = true; // show admin schedule view
 				}
 
-				if (isAdmin == false && isAssistent == true) {
-					isAssistent = true; // show assistent schedule view
+				if (isAdmin == false && isAssistant == true) {
+					isAssistant = true; // show Assistant schedule view
 				}
 
 				try {
@@ -128,6 +126,7 @@ public class LoginController {
 
 					loginView.dispose();
 					scheduleView.setVisible(true);
+					scheduleController.preferencesMismatch();
 				} catch (Exception ex) {
 					ex.printStackTrace();
 				}
@@ -172,16 +171,16 @@ public class LoginController {
 
 	}
 
-	public User getUser(String username, String password, boolean isAdmin, boolean isAssistent) {
+	public User getUser(String username, String password, boolean isAdmin, boolean isAssistant) {
 		for (User u : Model.getTeachingStaff()) {
 			if (u.getUsername().equals(username) && u.getPassword().equals(password) && u.isAdmin() == isAdmin
-					&& u.isAssistent() == isAssistent) {
+					&& u.isAssistant() == isAssistant) {
 				return u;
 			}
 		}
 		for (User u : Model.getStudents()) {
 			if (u.getUsername().equals(username) && u.getPassword().equals(password) && u.isAdmin() == isAdmin
-					&& u.isAssistent() == isAssistent) {
+					&& u.isAssistant() == isAssistant) {
 				return u;
 			}
 		}

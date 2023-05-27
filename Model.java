@@ -29,15 +29,19 @@ public class Model {
 	private static final RoomEquipment[] ROOM_EQUIPMENT = RoomEquipment.values();
 
 	static {
-		new Administrator("emayer", "1234", "emayer@mail.com", true, false);
-		new Assistent("slubos", "1234", "slubos@mail.com", false, true);
-		new Assistent("mgukesh", "1234", "mgukesh@mail.com", false, true);
+		Administrator admin1 = new Administrator("emayer", "1234", "emayer@mail.com", true, false);
+		Assistant assistant1 = new Assistant("slubos", "1234", "slubos@mail.com", false, true);
+		Assistant assistant2 = new Assistant("mgukesh", "1234", "mgukesh@mail.com", false, true);
 		new Student("dhubmann", "1234", "dhubmann@mail.com", false, false);
 		new Student("rhofer", "1234", "rhofer@mail.com", false, false);
 
-		Room room1 = new Room(Building.A, RoomNumber.R1, RoomEquipment.STANDARD);
+		admin1.setPreferredRoomEquipment(RoomEquipment.COMPUTERS);
+		assistant1.setPreferredRoomEquipment(RoomEquipment.COMPUTERS);
+		assistant2.setPreferredRoomEquipment(RoomEquipment.SPACE);
+		
+		Room room1 = new Room(Building.A, RoomNumber.R1, RoomEquipment.COMPUTERS);
 		Room room2 = new Room(Building.C, RoomNumber.R3, RoomEquipment.SPACE);
-		Room room3 = new Room(Building.B, RoomNumber.R4, RoomEquipment.COMPUTERS);
+		Room room3 = new Room(Building.B, RoomNumber.R4, RoomEquipment.STANDARD);
 
 		rooms.add(room1);
 		rooms.add(room2);

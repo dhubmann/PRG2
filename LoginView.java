@@ -16,7 +16,7 @@ public class LoginView extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JFrame frame;
 	private JPanel contentPane;
-	private JCheckBox chckbxAdmin, chckbxAssistent;
+	private JCheckBox chckbxAdmin, chckbxAssistant;
 	private JButton btnLogin, btnForgotPassword, btnCreateAccount;
 	private JTextField tfUsername;
 	private JPasswordField tfPassword;
@@ -34,8 +34,8 @@ public class LoginView extends JFrame {
 		return chckbxAdmin;
 	}
 
-	public JCheckBox getChckbxAssistent() {
-		return chckbxAssistent;
+	public JCheckBox getChckbxAssistant() {
+		return chckbxAssistant;
 	}
 
 	public JButton getBtnLogin() {
@@ -63,7 +63,7 @@ public class LoginView extends JFrame {
 	 */
 	public LoginView() {
 
-		setTitle("ISchedule Login");
+		setTitle("iSchedule Login");
 		setSize(350, 315);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setResizable(true);
@@ -83,8 +83,8 @@ public class LoginView extends JFrame {
 		tfPassword.setColumns(20);
 		chckbxAdmin = new JCheckBox("Administrator");
 		chckbxAdmin.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		chckbxAssistent = new JCheckBox("Assistent");
-		chckbxAssistent.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		chckbxAssistant = new JCheckBox("Assistant");
+		chckbxAssistant.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
 		btnLogin = new JButton("LOGIN");
 		btnLogin.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -93,7 +93,7 @@ public class LoginView extends JFrame {
 		btnCreateAccount = new JButton("Create Account");
 		btnCreateAccount.setFont(new Font("SansSerif", Font.PLAIN, 12));
 
-		JLabel titleLabel = new JLabel("ISchedule");
+		JLabel titleLabel = new JLabel("iSchedule");
 		titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
 		titleLabel.setFont(new Font("SansSerif", Font.BOLD, 18));
 
@@ -108,7 +108,7 @@ public class LoginView extends JFrame {
 												.addPreferredGap(ComponentPlacement.RELATED)))
 								.addGroup(layout.createParallelGroup(Alignment.LEADING)
 										.addGroup(layout.createSequentialGroup().addComponent(chckbxAdmin).addGap(18)
-												.addComponent(chckbxAssistent))
+												.addComponent(chckbxAssistant))
 										.addComponent(tfPassword, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)
 										.addComponent(tfUsername, GroupLayout.DEFAULT_SIZE, 232, Short.MAX_VALUE)))
 						.addComponent(btnCreateAccount, GroupLayout.DEFAULT_SIZE, 304, Short.MAX_VALUE)
@@ -128,7 +128,7 @@ public class LoginView extends JFrame {
 								.addComponent(lblPassword))
 						.addGap(18)
 						.addGroup(layout.createParallelGroup(Alignment.BASELINE).addComponent(chckbxAdmin)
-								.addComponent(chckbxAssistent))
+								.addComponent(chckbxAssistant))
 						.addGap(18).addComponent(btnLogin, GroupLayout.PREFERRED_SIZE, 30, GroupLayout.PREFERRED_SIZE)
 						.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnForgotPassword)
 						.addPreferredGap(ComponentPlacement.RELATED).addComponent(btnCreateAccount)

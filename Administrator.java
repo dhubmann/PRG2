@@ -1,17 +1,18 @@
-import java.time.LocalTime;
-
 /*
  * Administrator
  * Represents Administrator object
  * Author: Daniel Hubmann
- * Last Change: 08.05.2023
+ * Last Change: 27.05.2023
  */
+
+import java.time.LocalTime;
 
 public class Administrator extends User {
 
 	private LocalTime preferredStartTime;
 	private LocalTime preferredEndTime;
 	private RoomEquipment preferredRoomEquipment;
+	private boolean preferred = true;
 
 	// Getters & Setters
 	public LocalTime getPreferredStartTime() {
@@ -38,6 +39,14 @@ public class Administrator extends User {
 		this.preferredRoomEquipment = preferredRoomEquipment;
 	}
 
+	public boolean isPreferred() {
+		return preferred;
+	}
+
+	public void setPreferred(boolean preferred) {
+		this.preferred = preferred;
+	}
+
 	// Constructor
 	public Administrator() {
 		this.setPreferredStartTime(Model.getTimes()[0]);
@@ -46,16 +55,16 @@ public class Administrator extends User {
 		Model.getTeachingStaff().add(this);
 	}
 
-	public Administrator(String username, String password, boolean isAdmin, boolean isAssistent) {
-		super(username, password, isAdmin, isAssistent);
+	public Administrator(String username, String password, boolean isAdmin, boolean isAssistant) {
+		super(username, password, isAdmin, isAssistant);
 		this.setPreferredStartTime(Model.getTimes()[0]);
 		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
 		Model.getTeachingStaff().add(this);
 	}
 
-	public Administrator(String username, String password, String email, boolean isAdmin, boolean isAssistent) {
-		super(username, password, email, isAdmin, isAssistent);
+	public Administrator(String username, String password, String email, boolean isAdmin, boolean isAssistant) {
+		super(username, password, email, isAdmin, isAssistant);
 		this.setPreferredStartTime(Model.getTimes()[0]);
 		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);

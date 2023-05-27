@@ -24,7 +24,7 @@ public class CreateAccount extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField tfUsername, tfEmailAddress;
-	private JCheckBox chckbxAdministrator, chckbxAssistent;
+	private JCheckBox chckbxAdministrator, chckbxAssistant;
 	private JPasswordField tfPassword, tfConfirmPassword;
 	private JLabel lblTitleISchedule;
 
@@ -68,10 +68,10 @@ public class CreateAccount extends JFrame {
 		lblConfirmPassword.setBounds(10, 208, 105, 14);
 		contentPane.add(lblConfirmPassword);
 
-		chckbxAssistent = new JCheckBox("Assistent");
-		chckbxAssistent.setFont(new Font("SansSerif", Font.PLAIN, 12));
-		chckbxAssistent.setBounds(125, 113, 99, 30);
-		contentPane.add(chckbxAssistent);
+		chckbxAssistant = new JCheckBox("Assistant");
+		chckbxAssistant.setFont(new Font("SansSerif", Font.PLAIN, 12));
+		chckbxAssistant.setBounds(125, 113, 99, 30);
+		contentPane.add(chckbxAssistant);
 
 		chckbxAdministrator = new JCheckBox("Administrator");
 		chckbxAdministrator.setFont(new Font("SansSerif", Font.PLAIN, 12));
@@ -102,7 +102,7 @@ public class CreateAccount extends JFrame {
 
 				String username = tfUsername.getText();
 				boolean isAdmin = chckbxAdministrator.isSelected();
-				boolean isAssistent = chckbxAssistent.isSelected();
+				boolean isAssistant = chckbxAssistant.isSelected();
 				String email = tfEmailAddress.getText();
 				String password = new String(tfPassword.getPassword());
 				String confirmPassword = new String(tfConfirmPassword.getPassword());
@@ -125,8 +125,8 @@ public class CreateAccount extends JFrame {
 					return;
 				}
 
-				if (InputValidator.isAdminAndAssistent(isAdmin, isAssistent)) {
-					InputValidator.isAdminAndAssistent();
+				if (InputValidator.isAdminAndAssistant(isAdmin, isAssistant)) {
+					InputValidator.isAdminAndAssistant();
 					return;
 				}
 
@@ -150,15 +150,15 @@ public class CreateAccount extends JFrame {
 				// Create new user
 				if (isAdmin) {
 					user = new Administrator();
-				} else if (isAssistent) {
-					user = new Assistent();
+				} else if (isAssistant) {
+					user = new Assistant();
 				} else {
 					user = new Student();
 				}
 				user.setUsername(username);
 				user.setPassword(password);
 				user.setAdmin(isAdmin);
-				user.setAssistent(isAssistent);
+				user.setAssistant(isAssistant);
 				user.setEmail(email);
 
 				dispose();
@@ -170,7 +170,7 @@ public class CreateAccount extends JFrame {
 		btnCreateAccount.setBounds(10, 237, 314, 28);
 		contentPane.add(btnCreateAccount);
 
-		lblTitleISchedule = new JLabel("ISchedule");
+		lblTitleISchedule = new JLabel("iSchedule");
 		lblTitleISchedule.setHorizontalAlignment(SwingConstants.CENTER);
 		lblTitleISchedule.setFont(new Font("SansSerif", Font.BOLD, 18));
 		lblTitleISchedule.setBounds(10, 11, 314, 28);

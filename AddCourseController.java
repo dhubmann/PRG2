@@ -2,7 +2,7 @@
  * AddCourseController
  * Represents Add Course logic
  * Author: Daniel Hubmann
- * Last Change: 28.04.2023
+ * Last Change: 27.05.2023
  */
 
 import java.awt.event.ActionEvent;
@@ -53,10 +53,7 @@ public class AddCourseController {
 				LocalTime endTime = (LocalTime) addCourseView.getCbEndTime().getSelectedItem();
 				String instructor = (String) addCourseView.getCbInstructor().getSelectedItem(); // username
 
-				/*
-				 * if input is valid, create new course object
-				 */
-
+				// Input Validation
 				if (InputValidator.checkBlankInput(courseTitle)) {
 					blankCourseTitle();
 					return;
@@ -72,10 +69,6 @@ public class AddCourseController {
 					return;
 				}
 
-				// TODO: implement new time preference settings
-				// if course.starttime is before instructor.starttime
-				// or if course.endttime is after instructor.endtime
-
 				if (!preferredTime(startTime, endTime, instructor)) {
 					notPreferredTime(instructor);
 				}
@@ -86,7 +79,6 @@ public class AddCourseController {
 
 				course = new Course(courseTitle, roomID, startTime, endTime, instructor);
 
-				// TODO: testing
 				if (courseOverlap()) {
 					roomNotAvailable();
 					removeCourseData();
@@ -108,7 +100,7 @@ public class AddCourseController {
 	}
 
 	/*
-	 * Overlap check methods & Warnings
+	 * Overlap check methods & warnings
 	 */
 	public void blankCourseTitle() {
 		JOptionPane.showMessageDialog(null, "Please enter a course title.");
@@ -164,22 +156,27 @@ public class AddCourseController {
 	public boolean preferredTime(LocalTime startTime, LocalTime endTime, String instructor) {
 		LocalTime start = null;
 		LocalTime end = null;
+
 		for (User u : Model.getTeachingStaff()) {
 			if (u.getUsername().equals(instructor)) {
 
 				if (u instanceof Administrator) {
 					start = ((Administrator) u).getPreferredStartTime();
 					end = ((Administrator) u).getPreferredEndTime();
-
 				}
 
-				if (u instanceof Assistent) {
-					start = ((Assistent) u).getPreferredStartTime();
-					end = ((Assistent) u).getPreferredEndTime();
-
+				if (u instanceof Assistant) {
+					start = ((Assistant) u).getPreferredStartTime();
+					end = ((Assistant) u).getPreferredEndTime();
 				}
 
 				if (startTime.isBefore(start) || endTime.isAfter(end)) {
+					if (u instanceof Administrator) {
+						((Administrator) u).setPreferred(false);
+					}
+					if (u instanceof Assistant) {
+						((Assistant) u).setPreferred(false);
+					}
 					return false;
 				}
 			}
@@ -200,9 +197,9 @@ public class AddCourseController {
 
 				}
 
-				if (u instanceof Assistent) {
-					start = ((Assistent) u).getPreferredStartTime();
-					end = ((Assistent) u).getPreferredEndTime();
+				if (u instanceof Assistant) {
+					start = ((Assistant) u).getPreferredStartTime();
+					end = ((Assistant) u).getPreferredEndTime();
 
 				}
 			}
@@ -215,18 +212,21 @@ public class AddCourseController {
 	// Compares room equipment preference of instructor with room equipment
 	public boolean preferredRoomEquipment(String instructor, String roomID) {
 
-		// TODO:
 		for (Room r : Model.getRooms()) {
 			if (r.getRoomID().equals(roomID)) {
 				for (User u : Model.getTeachingStaff()) {
 					if (u instanceof Administrator && u.getUsername().equals(instructor)) {
 						if (((Administrator) u).getPreferredRoomEquipment().equals(r.getRoomEquipment())) {
 							return true;
+						} else {
+							((Administrator) u).setPreferred(false);
 						}
 					}
-					if (u instanceof Assistent && u.getUsername().equals(instructor)) {
-						if (((Assistent) u).getPreferredRoomEquipment().equals(r.getRoomEquipment())) {
+					if (u instanceof Assistant && u.getUsername().equals(instructor)) {
+						if (((Assistant) u).getPreferredRoomEquipment().equals(r.getRoomEquipment())) {
 							return true;
+						} else {
+							((Assistant) u).setPreferred(false);
 						}
 					}
 				}

@@ -2,19 +2,17 @@
  * Room
  * Represents Room object
  * Author: Daniel Hubmann
- * Last Change: 10.05.2023
+ * Last Change: 27.05.2023
  */
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.UUID;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 public class Room {
 
-	private UUID roomUUID;
 	private String roomID;
 	private RoomEquipment roomEquipment;
 	private JPanel panelRoomColumn;
@@ -23,14 +21,6 @@ public class Room {
 	private static int numRooms;
 
 	// Getters & Setters
-	public UUID getRoomUUID() {
-		return roomUUID;
-	}
-
-	public void setRoomUUID(UUID roomUUID) {
-		this.roomUUID = roomUUID;
-	}
-
 	public String getRoomID() {
 		return roomID;
 	}
@@ -80,15 +70,8 @@ public class Room {
 	}
 
 	// Constructors
-//	public Room() {
-//		numRooms++;
-//		this.setRoomUUID(UUID.randomUUID());
-//		this.roomID = "R" + numRooms; // "R1", "R2"...
-//	}
-
 	public Room(Building building, RoomNumber roomNumber, RoomEquipment roomEq) {
 		numRooms++;
-		this.setRoomUUID(UUID.randomUUID());
 		this.roomID = building.name() + "-" + roomNumber.name();
 		this.roomEquipment = roomEq;
 	}
@@ -117,8 +100,5 @@ public class Room {
 		});
 
 	}
-
-	// TODO:
-	// printRoomInfo() ?
 
 }

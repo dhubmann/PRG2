@@ -1,30 +1,22 @@
+import java.util.ArrayList;
+
 /*
  * User
  * Represents abstract User object
  * Author: Daniel Hubmann
- * Last Change: 26.04.2023
+ * Last Change: 27.05.2023
  */
-
-import java.util.UUID;
 
 public abstract class User {
 
-	private UUID userID;
 	private String username;
 	private String password;
 	private String email;
 	private boolean isAdmin;
-	private boolean isAssistent;
+	private boolean isAssistant;
+	private ArrayList<Course> courseList = new ArrayList<Course>();
 
 	// Getters & Setters
-	public UUID getUserID() {
-		return userID;
-	}
-
-	public void setUserID(UUID userID) {
-		this.userID = userID;
-	}
-
 	public String getUsername() {
 		return username;
 	}
@@ -57,12 +49,20 @@ public abstract class User {
 		this.isAdmin = isAdmin;
 	}
 
-	public boolean isAssistent() {
-		return isAssistent;
+	public boolean isAssistant() {
+		return isAssistant;
 	}
 
-	public void setAssistent(boolean isAssistent) {
-		this.isAssistent = isAssistent;
+	public void setAssistant(boolean isAssistant) {
+		this.isAssistant = isAssistant;
+	}
+
+	public ArrayList<Course> getCourseList() {
+		return courseList;
+	}
+
+	public void setCourseList(ArrayList<Course> courseList) {
+		this.courseList = courseList;
 	}
 
 	// Constructors
@@ -70,19 +70,19 @@ public abstract class User {
 
 	}
 
-	public User(String username, String password, boolean isAdmin, boolean isAssistent) {
+	public User(String username, String password, boolean isAdmin, boolean isAssistant) {
 		this.username = username;
 		this.password = password;
 		this.isAdmin = isAdmin;
-		this.isAssistent = isAssistent;
+		this.isAssistant = isAssistant;
 	}
 
-	public User(String username, String password, String email, boolean isAdmin, boolean isAssistent) {
+	public User(String username, String password, String email, boolean isAdmin, boolean isAssistant) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
 		this.isAdmin = isAdmin;
-		this.isAssistent = isAssistent;
+		this.isAssistant = isAssistant;
 	}
 
 }

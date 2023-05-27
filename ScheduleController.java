@@ -2,7 +2,7 @@
  * ScheduleController
  * Represents schedule logic
  * Author: Daniel Hubmann
- * Last Change: 27.04.2023
+ * Last Change: 27.05.2023
  */
 
 import java.awt.Color;
@@ -61,7 +61,7 @@ public class ScheduleController {
 			}
 		}
 
-		if (loginController.isAssistent()) {
+		if (loginController.isAssistant()) {
 			scheduleView.getBtnAddRoom().setEnabled(false);
 			scheduleView.getBtnAddCourse().setEnabled(false);
 		}
@@ -226,8 +226,8 @@ public class ScheduleController {
 
 					/*
 					 * TODO: implement compression of room columns if a column gets deleted between
-					 * two columns or on the far left - so far, only deleting the furthest column to
-					 * the right works fine
+					 * two columns or on the far left - for now, only deleting the furthest column
+					 * to the right works fine
 					 */
 
 					int result = JOptionPane.showConfirmDialog(scheduleView.getPanelMain(),
@@ -268,7 +268,6 @@ public class ScheduleController {
 
 	// Creates new course block
 	public void newCourseBlock(Course course) {
-
 		final int BLOCK_HEIGHT = 25;
 		final int Y_COORD = Model.timeIndex(course.getStartTime()) * BLOCK_HEIGHT;
 		final int WIDTH = 100;
@@ -331,11 +330,11 @@ public class ScheduleController {
 		course.setPanelCourseBlock(panelCourseBlock);
 
 		// MouseListener
-		lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//		lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 		MouseListener ml = new MouseAdapter() {
 
 			/*
-			 * Students click on course blocks to sign up for courses.
+			 * Students click on course blocks to sign up for courses
 			 */
 
 			@Override
@@ -370,15 +369,16 @@ public class ScheduleController {
 		}
 
 		/*
-		 * Assistents only see courses they are the instructor of
+		 * Assistants only see courses they are the instructor of
 		 */
-		if (loginController.isAssistent() && !courseInstructor(course, loginController.getUser())) {
+		if (loginController.isAssistant() && !courseInstructor(course, loginController.getUser())) {
 			panelCourseBlock.setVisible(false);
 		}
 
 		// Setting signed in & overlapping course labels to not clickable
 		if (loginController.isStudent()) {
 
+			lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			course.getLblCourseBlock().addMouseListener(ml);
 			course.setMouseListener(ml);
 
@@ -437,6 +437,22 @@ public class ScheduleController {
 		}
 	}
 
+	// Checks if administrator or assistant has courses outside of preferences
+	public void preferencesMismatch() {
+		if (loginController.getUser() instanceof Administrator) {
+			Administrator admin = (Administrator) loginController.getUser();
+			if (!admin.isPreferred()) {
+				preferencesMismatchWarning();
+			}
+		}
+		if (loginController.getUser() instanceof Assistant) {
+			Assistant assistant = (Assistant) loginController.getUser();
+			if (!assistant.isPreferred()) {
+				preferencesMismatchWarning();
+			}
+		}
+	}
+
 	public void roomLimitWarning() {
 		JOptionPane.showMessageDialog(null,
 				"We are sorry - the room limit has exceeded!\nPlease contact the office of the University Dean if you need more rooms.");
@@ -444,6 +460,11 @@ public class ScheduleController {
 
 	public void noRoomCreatedWarning() {
 		JOptionPane.showMessageDialog(null, "Please add a new room first");
+	}
+
+	public void preferencesMismatchWarning() {
+		JOptionPane.showMessageDialog(null,
+				"Warning! You have courses outside of your preferences.\nPlease contact an administrator for further information.");
 	}
 
 }

@@ -58,9 +58,9 @@ public class InputValidator {
 		return false;
 	}
 
-	// Checks if user is administrator and assistent (not allowed)
-	public static boolean isAdminAndAssistent(boolean isAdmin, boolean isAssistent) {
-		if (isAdmin && isAssistent) {
+	// Checks if user is administrator and Assistant (not allowed)
+	public static boolean isAdminAndAssistant(boolean isAdmin, boolean isAssistant) {
+		if (isAdmin && isAssistant) {
 			return true;
 		}
 		return false;
@@ -79,9 +79,9 @@ public class InputValidator {
 		JOptionPane.showMessageDialog(null, "Please enter your password.");
 	}
 
-	public static void isAdminAndAssistent() {
+	public static void isAdminAndAssistant() {
 		JOptionPane.showMessageDialog(null,
-				"We are sorry - Users are not allowed to be Administrators and Assistents.");
+				"We are sorry - Users are not allowed to be Administrators and Assistants.");
 	}
 
 }

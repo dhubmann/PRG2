@@ -2,7 +2,7 @@
  * ScheduleView
  * Represents schedule view
  * Author: Daniel Hubmann
- * Last Change: 27.04.2023
+ * Last Change: 27.05.2023
  */
 
 import java.awt.*;
@@ -10,13 +10,8 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.GroupLayout.Alignment;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.border.LineBorder;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.WeekFields;
-import java.util.Locale;
-import java.awt.event.ActionEvent;
 import javax.swing.border.EtchedBorder;
 
 public class ScheduleView extends JFrame {
@@ -94,7 +89,7 @@ public class ScheduleView extends JFrame {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("E dd.MM. '(KW 'ww')'");
 		String formattedDate = date.format(formatter);
 
-		JLabel lblDate = new JLabel(formattedDate); // TODO: change to current date or sth
+		JLabel lblDate = new JLabel(formattedDate);
 		lblDate.setBackground(new Color(255, 255, 255));
 		lblDate.setFont(new Font("SansSerif", Font.PLAIN, 16));
 		lblDate.setHorizontalAlignment(SwingConstants.CENTER);
@@ -111,6 +106,11 @@ public class ScheduleView extends JFrame {
 		panelMain.setBackground(new Color(255, 255, 255));
 		panelMain.setLayout(null);
 
+		/*
+		 * Used for designing layout - room columns are added dynamically within
+		 * application
+		 */
+		
 		// ROOM COLUMN
 //		JPanel panelRoomColumn = new JPanel();
 //		panelRoomColumn.setBorder(new EtchedBorder(EtchedBorder.LOWERED, null, null));
@@ -136,7 +136,7 @@ public class ScheduleView extends JFrame {
 //		btnDelete.setMargin(new Insets(0, 0, 0, 0));
 //		panelRoomColumn.add(btnDelete);
 
-		// new: Course Block
+		// Course Block
 //		int height = 200;
 //		JPanel panelCourseBlock = new JPanel();
 //		panelCourseBlock.setBounds(0, 100, 100, height);
@@ -161,8 +161,8 @@ public class ScheduleView extends JFrame {
 //		
 //		panelCourseBlock.add(btnDeleteCourse);
 //		panelCourseBlock.add(lblCourseBlock);
-//
-//		// name of room
+
+		// name of room
 //		JLabel lblRoomID = new JLabel("test");
 //		lblRoomID.setBounds(10, 11, 100, 24);
 //		panelRoomColumn.add(lblRoomID);
@@ -198,6 +198,7 @@ public class ScheduleView extends JFrame {
 		lblStudentInfo.setFont(new Font("SansSerif", Font.PLAIN, 11));
 		lblStudentInfo.setHorizontalAlignment(SwingConstants.LEFT);
 		lblStudentInfo.setBounds(10, 11, 134, 95);
+		lblStudentInfo.setVisible(false);
 		panelSidebar.add(lblStudentInfo);
 
 		btnLogout = new JButton("LOGOUT");
@@ -205,14 +206,7 @@ public class ScheduleView extends JFrame {
 		btnLogout.setBounds(10, 661, 134, 30);
 		panelSidebar.add(btnLogout);
 
-		// TODO: necessary?
-//		lblLoggedInUser = new JLabel("You are logged in, ");
-//		lblLoggedInUser.setVerticalAlignment(SwingConstants.TOP);
-//		lblLoggedInUser.setFont(new Font("SansSerif", Font.PLAIN, 11));
-//		lblLoggedInUser.setBounds(10, 622, 134, 28);
-//		panelSidebar.add(lblLoggedInUser);
-
-		// set layout and add components to layout
+		// Set layout and add components to layout
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 				.addGroup(gl_contentPane.createSequentialGroup()

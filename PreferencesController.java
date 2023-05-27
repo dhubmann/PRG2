@@ -61,10 +61,10 @@ public class PreferencesController {
 					((Administrator) user).setPreferredEndTime(endTime);
 				}
 
-				if (user instanceof Assistent) {
-					((Assistent) user).setPreferredRoomEquipment(preferredRoomEquipment);
-					((Assistent) user).setPreferredStartTime(startTime);
-					((Assistent) user).setPreferredEndTime(endTime);
+				if (user instanceof Assistant) {
+					((Assistant) user).setPreferredRoomEquipment(preferredRoomEquipment);
+					((Assistant) user).setPreferredStartTime(startTime);
+					((Assistant) user).setPreferredEndTime(endTime);
 				}
 
 				preferencesView.dispose();
