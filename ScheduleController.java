@@ -52,7 +52,7 @@ public class ScheduleController {
 		this.scheduleView = scheduleView;
 		this.loginController = loginController;
 
-		if (loginController.isStudent()) {
+		if (loginController.getUser() instanceof Student) {
 			scheduleView.getBtnAddRoom().setVisible(false);
 			scheduleView.getBtnAddCourse().setVisible(false);
 			scheduleView.getBtnPreferences().setVisible(false);
@@ -61,7 +61,7 @@ public class ScheduleController {
 			}
 		}
 
-		if (loginController.isAssistant()) {
+		if (loginController.getUser() instanceof Assistant) {
 			scheduleView.getBtnAddRoom().setEnabled(false);
 			scheduleView.getBtnAddCourse().setEnabled(false);
 		}
@@ -213,7 +213,7 @@ public class ScheduleController {
 		scheduleView.getPanelMain().repaint();
 
 		// delete button
-		if (loginController.isAdmin()) {
+		if (loginController.getUser() instanceof Administrator) {
 			JButton btnDelete = new JButton("X");
 			btnDelete.setLocation(100, 0);
 			btnDelete.setSize(20, 20);
@@ -364,19 +364,19 @@ public class ScheduleController {
 		};
 
 		// TODO: implement Priviligies Class
-		if (!loginController.isAdmin()) {
+		if (!(loginController.getUser() instanceof Administrator)) {
 			btnDeleteCourse.setVisible(false);
 		}
 
 		/*
 		 * Assistants only see courses they are the instructor of
 		 */
-		if (loginController.isAssistant() && !courseInstructor(course, loginController.getUser())) {
+		if (loginController.getUser() instanceof Assistant && !courseInstructor(course, loginController.getUser())) {
 			panelCourseBlock.setVisible(false);
 		}
 
 		// Setting signed in & overlapping course labels to not clickable
-		if (loginController.isStudent()) {
+		if (loginController.getUser() instanceof Student) {
 
 			lblCourseBlock.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 			course.getLblCourseBlock().addMouseListener(ml);

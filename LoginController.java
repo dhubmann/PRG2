@@ -13,9 +13,6 @@ import javax.swing.JOptionPane;
 public class LoginController {
 
 	private LoginView loginView;
-	private boolean isStudent;
-	private boolean isAdmin;
-	private boolean isAssistant;
 	private User user;
 
 	// Getters & Setters
@@ -25,30 +22,6 @@ public class LoginController {
 
 	public void setLoginView(LoginView loginView) {
 		this.loginView = loginView;
-	}
-
-	public boolean isStudent() {
-		return isStudent;
-	}
-
-	public void setStudent(boolean isStudent) {
-		this.isStudent = isStudent;
-	}
-
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-
-	public boolean isAssistant() {
-		return isAssistant;
-	}
-
-	public void setAssistant(boolean isAssistant) {
-		this.isAssistant = isAssistant;
 	}
 
 	public User getUser() {
@@ -71,8 +44,8 @@ public class LoginController {
 
 				String username = loginView.getTfUsername().getText();
 				String password = new String(loginView.getTfPassword().getPassword());
-				isAdmin = loginView.getChckbxAdmin().isSelected();
-				isAssistant = loginView.getChckbxAssistant().isSelected();
+				boolean isAdmin = loginView.getChckbxAdmin().isSelected();
+				boolean isAssistant = loginView.getChckbxAssistant().isSelected();
 
 				// Input Validation
 				if (InputValidator.checkBlankInput(username)) {
@@ -95,19 +68,6 @@ public class LoginController {
 					return;
 				} else {
 					user = getUser(username, password, isAdmin, isAssistant);
-				}
-
-				// TODO: implement Privilegies Class
-				if (isAdmin == false && isAssistant == false) {
-					isStudent = true; // show student schedule view
-				}
-
-				if (isAdmin == true && isAssistant == false) {
-					isAdmin = true; // show admin schedule view
-				}
-
-				if (isAdmin == false && isAssistant == true) {
-					isAssistant = true; // show Assistant schedule view
 				}
 
 				try {
