@@ -2,7 +2,7 @@
  * Student
  * Represents Student object
  * Author: Daniel Hubmann
- * Last Change: 27.05.2023
+ * Last Change: 29.05.2023
  */
 
 public class Student extends User {
@@ -13,13 +13,13 @@ public class Student extends User {
 		Model.getStudents().add(this);
 	}
 
-	public Student(String username, String password, boolean isAdmin, boolean isAssistant) {
-		super(username, password, isAdmin, isAssistant);
+	public Student(String username, String password) {
+		super(username, password);
 		Model.getStudents().add(this);
 	}
 
-	public Student(String username, String password, String email, boolean isAdmin, boolean isAssistant) {
-		super(username, password, email, isAdmin, isAssistant);
+	public Student(String username, String password, String email) {
+		super(username, password, email);
 		Model.getStudents().add(this);
 	}
 

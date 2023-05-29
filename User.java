@@ -4,7 +4,7 @@ import java.util.ArrayList;
  * User
  * Represents abstract User object
  * Author: Daniel Hubmann
- * Last Change: 27.05.2023
+ * Last Change: 29.05.2023
  */
 
 public abstract class User {
@@ -12,8 +12,6 @@ public abstract class User {
 	private String username;
 	private String password;
 	private String email;
-	private boolean isAdmin;
-	private boolean isAssistant;
 	private ArrayList<Course> courseList = new ArrayList<Course>();
 
 	// Getters & Setters
@@ -41,22 +39,6 @@ public abstract class User {
 		this.email = email;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
-	}
-
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
-
-	public boolean isAssistant() {
-		return isAssistant;
-	}
-
-	public void setAssistant(boolean isAssistant) {
-		this.isAssistant = isAssistant;
-	}
-
 	public ArrayList<Course> getCourseList() {
 		return courseList;
 	}
@@ -70,19 +52,15 @@ public abstract class User {
 
 	}
 
-	public User(String username, String password, boolean isAdmin, boolean isAssistant) {
+	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
-		this.isAdmin = isAdmin;
-		this.isAssistant = isAssistant;
 	}
 
-	public User(String username, String password, String email, boolean isAdmin, boolean isAssistant) {
+	public User(String username, String password, String email) {
 		this.username = username;
 		this.password = password;
 		this.email = email;
-		this.isAdmin = isAdmin;
-		this.isAssistant = isAssistant;
 	}
 
 }

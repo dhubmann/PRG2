@@ -2,7 +2,7 @@
  * Model
  * Represents application data
  * Author: Daniel Hubmann
- * Last Change: 10.05.2023
+ * Last Change: 29.05.2023
  */
 
 import java.time.LocalTime;
@@ -29,11 +29,11 @@ public class Model {
 	private static final RoomEquipment[] ROOM_EQUIPMENT = RoomEquipment.values();
 
 	static {
-		Administrator admin1 = new Administrator("emayer", "1234", "emayer@mail.com", true, false);
-		Assistant assistant1 = new Assistant("slubos", "1234", "slubos@mail.com", false, true);
-		Assistant assistant2 = new Assistant("mgukesh", "1234", "mgukesh@mail.com", false, true);
-		new Student("dhubmann", "1234", "dhubmann@mail.com", false, false);
-		new Student("rhofer", "1234", "rhofer@mail.com", false, false);
+		Administrator admin1 = new Administrator("emayer", "1234", "emayer@mail.com");
+		Assistant assistant1 = new Assistant("slubos", "1234", "slubos@mail.com");
+		Assistant assistant2 = new Assistant("mgukesh", "1234", "mgukesh@mail.com");
+		new Student("dhubmann", "1234", "dhubmann@mail.com");
+		new Student("rhofer", "1234", "rhofer@mail.com");
 
 		admin1.setPreferredRoomEquipment(RoomEquipment.COMPUTERS);
 		assistant1.setPreferredRoomEquipment(RoomEquipment.COMPUTERS);

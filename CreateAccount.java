@@ -157,8 +157,6 @@ public class CreateAccount extends JFrame {
 				}
 				user.setUsername(username);
 				user.setPassword(password);
-				user.setAdmin(isAdmin);
-				user.setAssistant(isAssistant);
 				user.setEmail(email);
 
 				dispose();

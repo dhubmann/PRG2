@@ -56,16 +56,16 @@ public class Assistant extends User {
 		Model.getTeachingStaff().add(this);
 	}
 
-	public Assistant(String username, String password, boolean isAdmin, boolean isAssistant) {
-		super(username, password, isAdmin, isAssistant);
+	public Assistant(String username, String password) {
+		super(username, password);
 		this.preferredStartTime = Model.getTimes()[0];
 		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.preferredRoomEquipment = RoomEquipment.STANDARD;
 		Model.getTeachingStaff().add(this);
 	}
 
-	public Assistant(String username, String password, String email, boolean isAdmin, boolean isAssistant) {
-		super(username, password, email, isAdmin, isAssistant);
+	public Assistant(String username, String password, String email) {
+		super(username, password, email);
 		this.preferredStartTime = Model.getTimes()[0];
 		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.preferredRoomEquipment = RoomEquipment.STANDARD;

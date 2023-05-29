@@ -2,7 +2,7 @@
  * LoginController
  * Represents Logic behind Login View
  * Author: Daniel Hubmann
- * Last Change: 27.05.2023
+ * Last Change: 29.05.2023
  */
 
 import java.awt.event.ActionEvent;
@@ -133,14 +133,13 @@ public class LoginController {
 
 	public User getUser(String username, String password, boolean isAdmin, boolean isAssistant) {
 		for (User u : Model.getTeachingStaff()) {
-			if (u.getUsername().equals(username) && u.getPassword().equals(password) && u.isAdmin() == isAdmin
-					&& u.isAssistant() == isAssistant) {
+			if (u.getUsername().equals(username) && u.getPassword().equals(password)
+					&& (u instanceof Administrator || u instanceof Assistant)) {
 				return u;
 			}
 		}
 		for (User u : Model.getStudents()) {
-			if (u.getUsername().equals(username) && u.getPassword().equals(password) && u.isAdmin() == isAdmin
-					&& u.isAssistant() == isAssistant) {
+			if (u.getUsername().equals(username) && u.getPassword().equals(password) && u instanceof Student) {
 				return u;
 			}
 		}

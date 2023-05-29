@@ -55,16 +55,16 @@ public class Administrator extends User {
 		Model.getTeachingStaff().add(this);
 	}
 
-	public Administrator(String username, String password, boolean isAdmin, boolean isAssistant) {
-		super(username, password, isAdmin, isAssistant);
+	public Administrator(String username, String password) {
+		super(username, password);
 		this.setPreferredStartTime(Model.getTimes()[0]);
 		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
 		Model.getTeachingStaff().add(this);
 	}
 
-	public Administrator(String username, String password, String email, boolean isAdmin, boolean isAssistant) {
-		super(username, password, email, isAdmin, isAssistant);
+	public Administrator(String username, String password, String email) {
+		super(username, password, email);
 		this.setPreferredStartTime(Model.getTimes()[0]);
 		this.setPreferredEndTime(Model.getTimes()[16]);
 		this.setPreferredRoomEquipment(RoomEquipment.STANDARD);
